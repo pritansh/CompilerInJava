@@ -4,12 +4,10 @@
 .method static public main([Ljava/lang/String;)V
 .limit stack 100
 .limit locals 100
+ldc 5
+istore 0
 getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc 4
-ldc 6.7
-fadd
-ldc 8.5
-fadd
-invokevirtual java/io/PrintStream/print(F)V
+iload 0
+invokevirtual java/io/PrintStream/print(I)V
 return
 .end method

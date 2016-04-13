@@ -116,6 +116,8 @@ public class Compiler extends PCBaseVisitor<String>{
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
 			appendToFile("\n" + type.toLowerCase() + "load " + tmp);
+			if(type.equals("i"))
+				appendToFile("\ni2f");
 		}
 		else 
 			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);

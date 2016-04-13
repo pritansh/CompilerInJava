@@ -28,8 +28,10 @@ public class Compiler extends PCBaseVisitor<String>{
 	private File file = null;
 	private FileWriter fw = null;
 	private String type;
+	private String[] types = new String[64];
+	private String[] entry = new String[64];
 	private HashMap<String,SymbolTableNode> symbolTable = new HashMap<>();
-	private int lineNumber = 1;
+	private int lineNumber = 1, typesIndex = 0, entryIndex = 0;
 	String begPrint = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;"; 
 	String endPrint = "\ninvokevirtual java/io/PrintStream/print";
 	
@@ -99,15 +101,33 @@ public class Compiler extends PCBaseVisitor<String>{
 		return null;
 	}
 	
+	public String findType() {
+		for(String temp:types) {
+			if(temp!=null && temp.equals("f"))
+				return temp;
+		}
+		return "i";
+	}
+	
 	public String visitDigit(DigitContext ctx) {
-		type = "i";
-		appendToFile("\nldc " + ctx.digit.getText());
+		types[typesIndex] = new String("i");
+		typesIndex++;
+		type = findType();
+		entry[entryIndex] = new String(ctx.digit.getText());
+		entryIndex++;
+		if(!type.equals("i"))
+			appendToFile("\ni2f");
 		return null;
 	}
 	
 	public String visitDecimal(DecimalContext ctx) {
-		type = "f";
-		appendToFile("\nldc " + ctx.decimal.getText());
+		types[typesIndex] = new String("f");
+		typesIndex++;
+		type = findType();
+		entry[entryIndex] = new String(ctx.decimal.getText());
+		entryIndex++;
+		if(!type.equals("f"))
+			appendToFile("\nf2i");
 		return null;
 	}
 	
@@ -115,7 +135,11 @@ public class Compiler extends PCBaseVisitor<String>{
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
+			types[typesIndex] = new String(type);
+			typesIndex++;
 			appendToFile("\n" + type.toLowerCase() + "load " + tmp);
+			if(type.equals("i"))
+				appendToFile("\ni2f");
 		}
 		else 
 			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);
@@ -125,6 +149,8 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitLine(LineContext ctx) {
 		lineNumber++;
 		type = null;
+		types = new String[64];
+		typesIndex = 0;
 		return null;
 	}
 	
