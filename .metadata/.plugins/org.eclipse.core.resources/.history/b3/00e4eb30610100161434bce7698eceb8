@@ -1,0 +1,6 @@
+package pc.compiler.symbolTable;
+
+public class SymbolTable {
+
+	
+}

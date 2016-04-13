@@ -1,0 +1,10 @@
+package pc.compiler.errors;
+
+public class VariableAlreadyDefined extends Error {
+	
+	private static final long serialVersionUID = -3766661921229136369L;
+
+	public VariableAlreadyDefined(String variable, char type, int line) {
+		System.out.println("Error : " + variable + " is already defined as " + type + "at line " + line);
+	}
+}

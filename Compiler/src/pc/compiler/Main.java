@@ -1,6 +1,7 @@
 package pc.compiler;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -14,7 +15,9 @@ import pc.parser.PCParser;
 
 public class Main {
 
-	private static String path = "cd \"C:\\Users\\Kinshu\\workspace\\CompilerInJava\\Compiler\"";
+	private static File f = new File("Demo.j");
+	private static String[] relPath = f.getAbsolutePath().split("Demo.j");
+	private static String path = "cd \"" + relPath[0] + "\"";
 	private static String compile = "&& java -jar lib/jasmin.jar Demo.j";
 	private static String run = "&& java Demo";
 	

@@ -1,0 +1,28 @@
+package pc.compiler.symbolTable;
+
+public class SymbolTableNode {
+
+	private String variable,type;
+	
+	public SymbolTableNode() {
+		variable = null;
+		type = null;
+	}
+	
+	public SymbolTableNode(String variable, String type) {
+		this.variable = variable;
+		this.type = type;
+	}
+	
+	public String toString() {
+		return "SymbolData Entry : " + variable + "," + type;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public String getVariable() {
+		return variable;
+	}
+}
