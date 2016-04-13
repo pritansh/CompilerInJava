@@ -1,7 +1,0 @@
-package pc.compiler.errors;
-
-public class VariableAlreadyDefined extends Error {
-	public VariableAlreadyDefined(String variable, String type, String line) {
-		System.out.println("Error : " + variable + " is already defined as " + type + "at line " + line);
-	}
-}
