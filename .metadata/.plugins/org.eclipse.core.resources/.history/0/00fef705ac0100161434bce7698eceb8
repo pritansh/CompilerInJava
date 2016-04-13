@@ -32,7 +32,7 @@ public class Main {
 		CommonTokenStream tokens = new  CommonTokenStream(lexer);
 		PCParser parser = new PCParser(tokens);
 		ParseTree tree = parser.program();
-		showTree(parser, tree);
+		//showTree(parser, tree);
 		new Compiler("Demo.j").visit(tree);    //Begins the creation of .j File
 		runProcess(compile);
 		runProcess(run);
