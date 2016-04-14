@@ -27,7 +27,8 @@ public class Compiler extends PCBaseVisitor<String>{
 
 	private File file = null;
 	private FileWriter fw = null;
-	private String type;
+	private String type, prevType;
+	private boolean floatBool = false;
 	private HashMap<String,SymbolTableNode> symbolTable = new HashMap<>();
 	private int lineNumber = 1;
 	String begPrint = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;"; 
@@ -100,12 +101,17 @@ public class Compiler extends PCBaseVisitor<String>{
 	}
 	
 	public String visitDigit(DigitContext ctx) {
-		type = "i";
 		appendToFile("\nldc " + ctx.digit.getText());
+		if(type!=null && type.equals("f"))
+			appendToFile("\ni2f");
+		else
+			type = "i";
 		return null;
 	}
 	
 	public String visitDecimal(DecimalContext ctx) {
+		if(type!=null && type.equals("i"))
+			appendToFile("\ni2f");
 		type = "f";
 		appendToFile("\nldc " + ctx.decimal.getText());
 		return null;
@@ -115,7 +121,16 @@ public class Compiler extends PCBaseVisitor<String>{
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
+			if(!floatBool && type.equals("f") && prevType!=null && prevType.equals("i"))
+				appendToFile("\ni2f");
+			if(type.equals("f"))
+				floatBool = true;
 			appendToFile("\n" + type.toLowerCase() + "load " + tmp);
+			prevType = type;
+			if(type!=null && type.equals("i") && floatBool) {
+				appendToFile("\ni2f");
+				type = "f";
+			}
 		}
 		else 
 			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);
@@ -125,10 +140,19 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitLine(LineContext ctx) {
 		lineNumber++;
 		type = null;
+		prevType = null;
+		floatBool = false;
 		return null;
 	}
 	
 	public String visitMultipleVariable(MultipleVariableContext ctx) {
+		visit(ctx.exp);
+		if(symbolTable.get(ctx.var.getText())==null) 
+			symbolTable.put(ctx.var.getText(), new SymbolTableNode(ctx.var.getText(), type, symbolTable.size()));
+		else
+			throw new VariableAlreadyDefined(ctx.getText(), ctx.var.getText(), lineNumber);
+		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
+		visitChildren(ctx);
 		return null;
 	}
 	

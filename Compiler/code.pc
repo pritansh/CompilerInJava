@@ -1,2 +1,2 @@
-a=5
-print(a)
+a=4.3,b=4.5,c=4
+println(a+b+c)
