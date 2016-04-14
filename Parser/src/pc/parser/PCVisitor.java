@@ -100,6 +100,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSubtract(PCParser.SubtractContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link PCParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(PCParser.StringContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Line}
 	 * labeled alternative in {@link PCParser#newLine}.
 	 * @param ctx the parse tree

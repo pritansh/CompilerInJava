@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
-import pc.compiler.errors.VariableAlreadyDefined;
 import pc.compiler.errors.VariableNotDefined;
 import pc.compiler.symbolTable.SymbolTableNode;
 import pc.parser.PCBaseVisitor;
@@ -20,6 +19,7 @@ import pc.parser.PCParser.MultiplyContext;
 import pc.parser.PCParser.PrintContext;
 import pc.parser.PCParser.PrintlnContext;
 import pc.parser.PCParser.ProgramContext;
+import pc.parser.PCParser.StringContext;
 import pc.parser.PCParser.SubtractContext;
 import pc.parser.PCParser.VariableContext;
 
@@ -65,20 +65,29 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitPrint(PrintContext ctx) {
 		appendToFile(begPrint);
 		visit(ctx.exp);
-		appendToFile(endPrint + "(" + type.toUpperCase() + ")V");
+		appendToFile(endPrint + "(");
+		if(type.equals("Ljava/lang/String;"))
+			appendToFile(type + ")V");
+		else
+			appendToFile(type.toUpperCase() + ")V");
 		return null;
 	}
 	
 	public String visitPrintln(PrintlnContext ctx) {
 		appendToFile(begPrint);
 		visit(ctx.exp);
-		appendToFile(endPrint + "ln(" + type.toUpperCase() + ")V");
+		appendToFile(endPrint + "ln(");
+		if(type.equals("Ljava/lang/String;"))
+			appendToFile(type + ")V");
+		else
+			appendToFile(type.toUpperCase() + ")V");
 		return null;
 	}
 	
 	public String visitAdd(AddContext ctx) {
 		visitChildren(ctx);
-		appendToFile("\n" + type.toLowerCase() + "add");
+		if(type!=null && !type.equals("Ljava/lang/String;"))
+			appendToFile("\n" + type.toLowerCase() + "add");
 		return null;
 	}
 	
@@ -102,6 +111,8 @@ public class Compiler extends PCBaseVisitor<String>{
 	
 	public String visitDigit(DigitContext ctx) {
 		appendToFile("\nldc " + ctx.digit.getText());
+		if(type!=null && type.equals("Ljava/lang/String;"))
+			prevType = "Ljava/lang/String;";
 		if(type!=null && type.equals("f"))
 			appendToFile("\ni2f");
 		else
@@ -117,20 +128,29 @@ public class Compiler extends PCBaseVisitor<String>{
 		return null;
 	}
 	
+	public String visitString(StringContext ctx) {
+		type = "Ljava/lang/String;";
+		appendToFile("\nldc " + ctx.str.getText());
+		return null;
+	}
+	
 	public String visitVariable(VariableContext ctx) {
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
 			if(!floatBool && type.equals("f") && prevType!=null && prevType.equals("i"))
 				appendToFile("\ni2f");
 			if(type.equals("f"))
 				floatBool = true;
 			appendToFile("\n" + type.toLowerCase() + "load " + tmp);
-			prevType = type;
 			if(type!=null && type.equals("i") && floatBool) {
 				appendToFile("\ni2f");
 				type = "f";
 			}
+			if(type.equals("a"))
+				type="Ljava/lang/String;";
 		}
 		else 
 			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);
@@ -149,8 +169,8 @@ public class Compiler extends PCBaseVisitor<String>{
 		visit(ctx.exp);
 		if(symbolTable.get(ctx.var.getText())==null) 
 			symbolTable.put(ctx.var.getText(), new SymbolTableNode(ctx.var.getText(), type, symbolTable.size()));
-		else
-			throw new VariableAlreadyDefined(ctx.getText(), ctx.var.getText(), lineNumber);
+		if(type.equals("Ljava/lang/String;"))
+			type = "a";
 		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
 		visitChildren(ctx);
 		return null;
@@ -160,8 +180,8 @@ public class Compiler extends PCBaseVisitor<String>{
 		visit(ctx.exp);
 		if(symbolTable.get(ctx.var.getText())==null) 
 			symbolTable.put(ctx.var.getText(), new SymbolTableNode(ctx.var.getText(), type, symbolTable.size()));
-		else
-			throw new VariableAlreadyDefined(ctx.getText(), ctx.var.getText(), lineNumber);
+		if(type.equals("Ljava/lang/String;"))
+			type = "a";
 		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
 		return null;
 	}

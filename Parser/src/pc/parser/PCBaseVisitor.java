@@ -108,5 +108,12 @@ public class PCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PCV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitString(PCParser.StringContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitLine(PCParser.LineContext ctx) { return visitChildren(ctx); }
 }
