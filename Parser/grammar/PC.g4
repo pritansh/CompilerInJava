@@ -7,13 +7,34 @@ programPart : printStatement
 		    | newLine
 		    ;
 
-printStatement : 'print(' exp=expression ')' #Print
-			   | 'println(' exp=expression ')' #Println
+printStatement : 'print(' exp=expressions ')' #Print
+			   | 'println(' exp=expressions ')' #Println
 			   ;
 
-variableDefinition : var=IDENTIFIER '=' exp=expression ',' variableDefinition #MultipleVariable
-				   | var=IDENTIFIER '=' exp=expression #LastVariable
-				   ;		
+variableDefinition : var=IDENTIFIER '=' exp=expressions ',' variableDefinition #MultipleVariable
+				   | var=IDENTIFIER '=' exp=expressions #LastVariable
+				   ;	
+				   
+expressions : stringExpression+
+			| expression+
+			;	   
+			
+stringExpression : stringRead
+				 | stringConcat
+				 | stringMultiply
+				 ;
+				 
+stringConcat : var=IDENTIFIER '+' right=stringConcat #StringAdd
+			 | str=STRING #StringAddString
+			 | digit=DIGIT #StringAddDigit
+			 | decimal=DECIMAL #StringAddDecimal
+			 ;
+			 
+stringMultiply : var=IDENTIFIER '*' digit=DIGIT #StringRepeat
+			   ;	
+			   
+stringRead : str=STRING #String
+		   ;
 			   
 expression : leftExp=expression '/' rightExp=expression #Divide
 		   | leftExp=expression '*' rightExp=expression #Multiply
@@ -22,7 +43,6 @@ expression : leftExp=expression '/' rightExp=expression #Divide
 		   | digit=DIGIT #Digit
 		   | decimal=DECIMAL #Decimal
 		   | var=IDENTIFIER #Variable
-		   | str=STRING #String
 		   ;
 		   
 newLine : '\n' #Line

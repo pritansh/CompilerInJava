@@ -51,6 +51,60 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLastVariable(PCParser.LastVariableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PCParser#expressions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressions(PCParser.ExpressionsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PCParser#stringExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringExpression(PCParser.StringExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringAdd}
+	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAdd(PCParser.StringAddContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringAddString}
+	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddString(PCParser.StringAddStringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringAddDigit}
+	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddDigit(PCParser.StringAddDigitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringAddDecimal}
+	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddDecimal(PCParser.StringAddDecimalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringRepeat}
+	 * labeled alternative in {@link PCParser#stringMultiply}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringRepeat(PCParser.StringRepeatContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link PCParser#stringRead}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(PCParser.StringContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Add}
 	 * labeled alternative in {@link PCParser#expression}.
 	 * @param ctx the parse tree
@@ -99,13 +153,6 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubtract(PCParser.SubtractContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code String}
-	 * labeled alternative in {@link PCParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(PCParser.StringContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Line}
 	 * labeled alternative in {@link PCParser#newLine}.

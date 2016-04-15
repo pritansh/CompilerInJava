@@ -19,7 +19,12 @@ import pc.parser.PCParser.MultiplyContext;
 import pc.parser.PCParser.PrintContext;
 import pc.parser.PCParser.PrintlnContext;
 import pc.parser.PCParser.ProgramContext;
+import pc.parser.PCParser.StringAddContext;
+import pc.parser.PCParser.StringAddDecimalContext;
+import pc.parser.PCParser.StringAddDigitContext;
+import pc.parser.PCParser.StringAddStringContext;
 import pc.parser.PCParser.StringContext;
+import pc.parser.PCParser.StringRepeatContext;
 import pc.parser.PCParser.SubtractContext;
 import pc.parser.PCParser.VariableContext;
 
@@ -131,6 +136,70 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitString(StringContext ctx) {
 		type = "Ljava/lang/String;";
 		appendToFile("\nldc " + ctx.str.getText());
+		return null;
+	}
+	
+	public String visitStringAdd(StringAddContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			type = tmp.getType();
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\nnew java/lang/StringBuilder");
+			appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
+			appendToFile("\n" + type + "load " + tmp);
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+			visit(ctx.right);
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type.toUpperCase() + ")Ljava/lang/StringBuilder;");
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
+			type = "a";
+		}
+		return null;
+	}
+	
+	public String visitStringAddDigit(StringAddDigitContext ctx) {
+		type = "i";
+		appendToFile("\nldc " + ctx.digit.getText());
+		return null;
+	}
+	
+	public String visitStringAddDecimal(StringAddDecimalContext ctx) {
+		type = "f";
+		appendToFile("\nldc " + ctx.decimal.getText());
+		return null;
+	}
+	
+	public String visitStringAddString(StringAddStringContext ctx) {
+		type = "Ljava/lang/String;";
+		appendToFile("\nldc " + ctx.str.getText());
+		return null;
+	}
+	
+	public String visitStringRepeat(StringRepeatContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			type = tmp.getType();
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\nnew java/lang/StringBuilder");
+			appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
+			appendToFile("\n" + type + "load " + tmp);
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
+			appendToFile("\n" + type + "store 99");
+			int count = Integer.parseInt(ctx.digit.getText());
+			for(int i=1;i<count;i++) {
+				appendToFile("\nnew java/lang/StringBuilder");
+				appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
+				appendToFile("\n" + type + "load " + tmp);
+				appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+				appendToFile("\n" + type + "load 99");
+				appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+				appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
+				if(i<count-1)
+					appendToFile("\n" + type + "store " + tmp);
+			}
+		}
 		return null;
 	}
 	

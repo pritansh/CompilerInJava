@@ -1,2 +1,3 @@
-d=" HelloWorld "
+d="Hello "
+d=d*8
 println(d)
