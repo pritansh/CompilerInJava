@@ -1,45 +1,47 @@
 # CompilerInJava
 Basic compiler written in java
 
-How to run this :-
+##How to run this :-
 
-Using Eclipse -
+####Using Eclipse -
 
 Import project into eclipse and edit code in CompilerInJava/Compiler/code.pc and compile Main.java to execute 
 
-This includes basic operations like +(addition), -(subtraction), *(multiplication), /(division)
+####This includes:- 
 
-Data types and variables 
+######Basic operations like +(addition), -(subtraction), *(multiplication), /(division)
 
-Example :-
+######Data types and variables 
 
-For integer, 
+####Examples :-
+
+>For integer 
 	
 	a = 4
 
-For float, 
+>For float 
 	
 	a=4.2
   
-For string, 
+>For string
 	
 	a="Hello World"
   
-Implicit Functions
+####Implicit Functions
 
-1.print()  -- print function
+>print()  -- print function
   	
   	print("Hello World")
   	Result :- Hello World
   
-2.println() -- println function --> prints the data then move to the newline
+>println() -- println function --> prints the data then move to the newline
   	
   	println(3+5.3)
   	Result :-  8.3
   
-String Manipulation : -
+####String Manipulation : -
 
-1.String concatenation
+>String concatenation
   	
   	str="Hello " + 4.5
   	println(str)
@@ -50,7 +52,7 @@ String Manipulation : -
   	println(str)
   	Result :- Hello World 4
   
-2.String Repeat
+>String Repeat
   	
   	str="Hello"*3
   	println(str)
