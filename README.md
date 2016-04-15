@@ -5,7 +5,11 @@ Basic compiler written in java
 
 ####Using Eclipse -
 
-Import project into eclipse and edit code in CompilerInJava/Compiler/code.pc and compile Main.java to execute 
+Import project into eclipse and edit code in CompilerInJava/Compiler/code.pc and compile Main.java to execute.
+
+####Alternate Method -
+
+Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and see output. After first execution of the script, a code.pc file will be created in the current directory. Edit code in this file and execute script to see the output.
 
 ####This includes:- 
 
