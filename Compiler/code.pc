@@ -1,5 +1,5 @@
-e="h"+9+"p"+0.9
-r=e+"h"+98
-println(e)
-println(r)
-println(e+r)
+a=6
+println(a)
+f=5.4
+str="Hellow"
+println(str+f+a)

@@ -524,7 +524,7 @@ public class PCParser extends Parser {
 	}
 	public static class HighContext extends ConditionExpressionContext {
 		public ExpressionContext left;
-		public ExpressionContext rigth;
+		public ExpressionContext right;
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -750,7 +750,7 @@ public class PCParser extends Parser {
 				setState(101);
 				match(T__15);
 				setState(102);
-				((HighContext)_localctx).rigth = expression(0);
+				((HighContext)_localctx).right = expression(0);
 				}
 				break;
 			case 9:

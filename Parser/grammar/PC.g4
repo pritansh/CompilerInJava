@@ -5,6 +5,7 @@ program : programPart+;
 programPart : printStatement
 		    | variableDefinition
 		    | newLine
+		    | conditionStatement
 		    ;
 
 printStatement : 'print(' exp=expressions ')' #Print
@@ -15,10 +16,28 @@ variableDefinition : var=IDENTIFIER '=' exp=expressions ',' variableDefinition #
 				   | var=IDENTIFIER '=' exp=expressions #LastVariable
 				   ;	
 				   
+conditionStatement : 'if ' exp=expressions ':' onTrue=block 'else' onFalse=block #IfElse
+				   ;
+				   
+block : programPart+
+	  ;
+		
+conditionExpression : left=expression '==' right=expression #Equal
+					| exp=expression '== null' #Null
+					| left=expression '!=' right=expression #NotEqual
+					| exp=expression '!= null' #NotNull
+					| left=expression '<=' right=expression #LessEqual
+					| left=expression '>=' right=expression #HighEqual
+					| left=expression '<' right=expression #Less
+					| left=expression '>' right=expression #High
+					| '!' exp=expression #Not
+					;
+				   
 expressions : stringExpression+
 			| expression+
+			| conditionExpression+
 			;	   
-			
+
 stringExpression : stringRead
 				 | stringMultiply
 				 | stringConcat

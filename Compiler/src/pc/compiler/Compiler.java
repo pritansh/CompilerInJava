@@ -153,7 +153,7 @@ public class Compiler extends PCBaseVisitor<String>{
 				type = "a";
 			appendToFile("\nnew java/lang/StringBuilder");
 			appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
-			appendToFile("\naload " + tmp);
+			appendToFile("\n" + type + "load " + tmp);
 			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
 			visit(ctx.right);
 			appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
@@ -184,7 +184,9 @@ public class Compiler extends PCBaseVisitor<String>{
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
-			appendToFile("\naload " + tmp);
+			appendToFile("\n" + type + "load " + tmp);
+			if(!type.equals("Ljava/lang/String;"))
+				type = type.toUpperCase();
 			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
 		}
 		return null;
