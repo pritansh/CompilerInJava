@@ -63,6 +63,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringExpression(PCParser.StringExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StringAddVariable}
+	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddVariable(PCParser.StringAddVariableContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringAdd}
 	 * labeled alternative in {@link PCParser#stringConcat}.
 	 * @param ctx the parse tree
@@ -70,33 +77,54 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringAdd(PCParser.StringAddContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StringAddConcat}
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddConcat(PCParser.StringAddConcatContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringAddString}
-	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStringAddString(PCParser.StringAddStringContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StringAddVar}
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAddVar(PCParser.StringAddVarContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringAddDigit}
-	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStringAddDigit(PCParser.StringAddDigitContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code StringAddDecimal}
-	 * labeled alternative in {@link PCParser#stringConcat}.
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStringAddDecimal(PCParser.StringAddDecimalContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code StringRepeat}
+	 * Visit a parse tree produced by the {@code StringRepeatVar}
 	 * labeled alternative in {@link PCParser#stringMultiply}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringRepeat(PCParser.StringRepeatContext ctx);
+	T visitStringRepeatVar(PCParser.StringRepeatVarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringRepeatString}
+	 * labeled alternative in {@link PCParser#stringMultiply}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringRepeatString(PCParser.StringRepeatStringContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code String}
 	 * labeled alternative in {@link PCParser#stringRead}.

@@ -20,17 +20,23 @@ expressions : stringExpression+
 			;	   
 			
 stringExpression : stringRead
-				 | stringConcat
 				 | stringMultiply
+				 | stringConcat
 				 ;
 				 
-stringConcat : var=IDENTIFIER '+' right=stringConcat #StringAdd
-			 | str=STRING #StringAddString
-			 | digit=DIGIT #StringAddDigit
-			 | decimal=DECIMAL #StringAddDecimal
+stringConcat : var=IDENTIFIER '+' right=stringConcatAdd #StringAddVariable
+			 | str=STRING '+' right=stringConcatAdd #StringAdd
 			 ;
 			 
-stringMultiply : var=IDENTIFIER '*' digit=DIGIT #StringRepeat
+stringConcatAdd : left=stringConcatAdd '+' right=stringConcatAdd #StringAddConcat 			  
+				| var=IDENTIFIER #StringAddVar
+			    | str=STRING #StringAddString
+			    | digit=DIGIT #StringAddDigit
+			    | decimal=DECIMAL #StringAddDecimal
+			    ;
+			 
+stringMultiply : var=IDENTIFIER '*' digit=DIGIT #StringRepeatVar
+			   | str=STRING '*' digit=DIGIT #StringRepeatString
 			   ;	
 			   
 stringRead : str=STRING #String

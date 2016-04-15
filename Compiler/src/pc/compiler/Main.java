@@ -1,7 +1,6 @@
 package pc.compiler;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -20,11 +19,8 @@ import pc.parser.PCParser;
 
 public class Main {
 
-	private static File f = new File("Demo.j");
-	private static String[] relPath = f.getAbsolutePath().split("Demo.j");
-	private static String path = "cd \"" + relPath[0] + "\"";
-	private static String compile = "&& java -jar lib/jasmin.jar Demo.j";
-	private static String run = "&& java Demo";
+	private static String compile = "java -jar lib/jasmin.jar Demo.j";
+	private static String run = "java Demo";
 	
 	public static void main(String[] args) throws IOException {
 		ANTLRInputStream input = new ANTLRFileStream("code.pc");
@@ -32,7 +28,7 @@ public class Main {
 		CommonTokenStream tokens = new  CommonTokenStream(lexer);
 		PCParser parser = new PCParser(tokens);
 		ParseTree tree = parser.program();
-		//showTree(parser, tree);
+		showTree(parser, tree);
 		new Compiler("Demo.j").visit(tree);    //Begins the creation of .j File
 		runProcess(compile);
 		runProcess(run);
@@ -53,13 +49,11 @@ public class Main {
 	
 	//Function for compiling and executing .j file
 	public static void runProcess(String type) {
-		ProcessBuilder process = new ProcessBuilder("cmd.exe","/c",path + type);
-		process.redirectErrorStream(true);
 		Process p = null;
 		try {
-			p = process.start();
-		} catch (IOException e) {
-			e.printStackTrace();
+			p = Runtime.getRuntime().exec(type);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line = null;

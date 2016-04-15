@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import pc.compiler.errors.VariableNotDefined;
+import pc.compiler.helper.Helper;
 import pc.compiler.symbolTable.SymbolTableNode;
 import pc.parser.PCBaseVisitor;
 import pc.parser.PCParser.AddContext;
@@ -19,12 +20,16 @@ import pc.parser.PCParser.MultiplyContext;
 import pc.parser.PCParser.PrintContext;
 import pc.parser.PCParser.PrintlnContext;
 import pc.parser.PCParser.ProgramContext;
+import pc.parser.PCParser.StringAddConcatContext;
 import pc.parser.PCParser.StringAddContext;
 import pc.parser.PCParser.StringAddDecimalContext;
 import pc.parser.PCParser.StringAddDigitContext;
 import pc.parser.PCParser.StringAddStringContext;
+import pc.parser.PCParser.StringAddVarContext;
+import pc.parser.PCParser.StringAddVariableContext;
 import pc.parser.PCParser.StringContext;
-import pc.parser.PCParser.StringRepeatContext;
+import pc.parser.PCParser.StringRepeatStringContext;
+import pc.parser.PCParser.StringRepeatVarContext;
 import pc.parser.PCParser.SubtractContext;
 import pc.parser.PCParser.VariableContext;
 
@@ -34,6 +39,7 @@ public class Compiler extends PCBaseVisitor<String>{
 	private FileWriter fw = null;
 	private String type, prevType;
 	private boolean floatBool = false;
+	private Helper helper;
 	private HashMap<String,SymbolTableNode> symbolTable = new HashMap<>();
 	private int lineNumber = 1;
 	String begPrint = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;"; 
@@ -42,13 +48,14 @@ public class Compiler extends PCBaseVisitor<String>{
 	public Compiler(String fileName) throws IOException {
 		file = new File(fileName);
 		fw = new FileWriter(file);
+		helper = new Helper(fw);
 		String temp = "\n.class public Demo\n.super java/lang/Object" + 
 						"\n.method static public main([Ljava/lang/String;)V" + 
 						"\n.limit stack 100\n.limit locals 100";
 		fw.write(temp);
 	}
 	
-	public void appendToFile(String instructions) {
+	private void appendToFile(String instructions) {
 		try {
 			fw.write(instructions);
 		} catch (IOException e) {
@@ -71,7 +78,7 @@ public class Compiler extends PCBaseVisitor<String>{
 		appendToFile(begPrint);
 		visit(ctx.exp);
 		appendToFile(endPrint + "(");
-		if(type.equals("Ljava/lang/String;"))
+		if(type!=null && type.equals("Ljava/lang/String;"))
 			appendToFile(type + ")V");
 		else
 			appendToFile(type.toUpperCase() + ")V");
@@ -82,7 +89,7 @@ public class Compiler extends PCBaseVisitor<String>{
 		appendToFile(begPrint);
 		visit(ctx.exp);
 		appendToFile(endPrint + "ln(");
-		if(type.equals("Ljava/lang/String;"))
+		if(type!=null && type.equals("Ljava/lang/String;"))
 			appendToFile(type + ")V");
 		else
 			appendToFile(type.toUpperCase() + ")V");
@@ -91,8 +98,7 @@ public class Compiler extends PCBaseVisitor<String>{
 	
 	public String visitAdd(AddContext ctx) {
 		visitChildren(ctx);
-		if(type!=null && !type.equals("Ljava/lang/String;"))
-			appendToFile("\n" + type.toLowerCase() + "add");
+		appendToFile("\n" + type.toLowerCase() + "add");
 		return null;
 	}
 	
@@ -139,7 +145,7 @@ public class Compiler extends PCBaseVisitor<String>{
 		return null;
 	}
 	
-	public String visitStringAdd(StringAddContext ctx) {
+	public String visitStringAddVariable(StringAddVariableContext ctx) {
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
@@ -147,12 +153,39 @@ public class Compiler extends PCBaseVisitor<String>{
 				type = "a";
 			appendToFile("\nnew java/lang/StringBuilder");
 			appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
-			appendToFile("\n" + type + "load " + tmp);
+			appendToFile("\naload " + tmp);
 			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
 			visit(ctx.right);
-			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type.toUpperCase() + ")Ljava/lang/StringBuilder;");
 			appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
-			type = "a";
+			type = "Ljava/lang/String;";
+		}
+		return null;
+	}
+	
+	public String visitStringAdd(StringAddContext ctx) {
+		type = "a";
+		appendToFile("\nnew java/lang/StringBuilder");
+		appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
+		appendToFile("\nldc " + ctx.str.getText());
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+		visit(ctx.right);
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
+		type = "Ljava/lang/String;";
+		return null;
+	}
+	
+	public String visitStringAddConcat(StringAddConcatContext ctx) {
+		visit(ctx.left);
+		visit(ctx.right);
+		return null;
+	}
+	
+	public String visitStringAddVar(StringAddVarContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			type = tmp.getType();
+			appendToFile("\naload " + tmp);
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
 		}
 		return null;
 	}
@@ -160,46 +193,52 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitStringAddDigit(StringAddDigitContext ctx) {
 		type = "i";
 		appendToFile("\nldc " + ctx.digit.getText());
+		if(!type.equals("Ljava/lang/String;"))
+			type = type.toUpperCase();
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
 		return null;
 	}
 	
 	public String visitStringAddDecimal(StringAddDecimalContext ctx) {
 		type = "f";
 		appendToFile("\nldc " + ctx.decimal.getText());
+		if(!type.equals("Ljava/lang/String;"))
+			type = type.toUpperCase();
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
 		return null;
 	}
 	
 	public String visitStringAddString(StringAddStringContext ctx) {
 		type = "Ljava/lang/String;";
 		appendToFile("\nldc " + ctx.str.getText());
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
 		return null;
 	}
 	
-	public String visitStringRepeat(StringRepeatContext ctx) {
+	public String visitStringRepeatVar(StringRepeatVarContext ctx) {
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
 			type = tmp.getType();
 			if(type.equals("Ljava/lang/String;"))
 				type = "a";
-			appendToFile("\nnew java/lang/StringBuilder");
-			appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
-			appendToFile("\n" + type + "load " + tmp);
-			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
-			appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
-			appendToFile("\n" + type + "store 99");
+			Helper helper = new Helper(fw);
+			helper.repeatString(""+tmp, true, false, 0, 99);
 			int count = Integer.parseInt(ctx.digit.getText());
-			for(int i=1;i<count;i++) {
-				appendToFile("\nnew java/lang/StringBuilder");
-				appendToFile("\ndup\ninvokespecial java/lang/StringBuilder/<init>()V");
-				appendToFile("\n" + type + "load " + tmp);
-				appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
-				appendToFile("\n" + type + "load 99");
-				appendToFile("\ninvokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;");
-				appendToFile("\ninvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;");
-				if(i<count-1)
-					appendToFile("\n" + type + "store " + tmp);
-			}
+			for(int i=1;i<count;i++) 
+				helper.repeatString(""+tmp, false, true, count-1-i, 99);
 		}
+		return null;
+	}
+	
+	public String visitStringRepeatString(StringRepeatStringContext ctx) {
+		type = "a";
+		appendToFile("\nldc " + ctx.str.getText());
+		appendToFile("\nastore " + (symbolTable.size()+1));
+		appendToFile("\naload " + (symbolTable.size()+1));
+		appendToFile("\nastore " + (symbolTable.size()+2));
+		int count = Integer.parseInt(ctx.digit.getText());
+		for(int i=1;i<count;i++)
+			helper.repeatString(""+(symbolTable.size()+1), false, true, count-1-i, (symbolTable.size()+2));
 		return null;
 	}
 	
@@ -249,7 +288,7 @@ public class Compiler extends PCBaseVisitor<String>{
 		visit(ctx.exp);
 		if(symbolTable.get(ctx.var.getText())==null) 
 			symbolTable.put(ctx.var.getText(), new SymbolTableNode(ctx.var.getText(), type, symbolTable.size()));
-		if(type.equals("Ljava/lang/String;"))
+		if(type!=null && type.equals("Ljava/lang/String;"))
 			type = "a";
 		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
 		return null;

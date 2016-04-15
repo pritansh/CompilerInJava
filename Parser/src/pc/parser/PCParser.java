@@ -22,11 +22,12 @@ public class PCParser extends Parser {
 	public static final int
 		RULE_program = 0, RULE_programPart = 1, RULE_printStatement = 2, RULE_variableDefinition = 3, 
 		RULE_expressions = 4, RULE_stringExpression = 5, RULE_stringConcat = 6, 
-		RULE_stringMultiply = 7, RULE_stringRead = 8, RULE_expression = 9, RULE_newLine = 10;
+		RULE_stringConcatAdd = 7, RULE_stringMultiply = 8, RULE_stringRead = 9, 
+		RULE_expression = 10, RULE_newLine = 11;
 	public static final String[] ruleNames = {
 		"program", "programPart", "printStatement", "variableDefinition", "expressions", 
-		"stringExpression", "stringConcat", "stringMultiply", "stringRead", "expression", 
-		"newLine"
+		"stringExpression", "stringConcat", "stringConcatAdd", "stringMultiply", 
+		"stringRead", "expression", "newLine"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -111,17 +112,17 @@ public class PCParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(23); 
+			setState(25); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(22);
+				setState(24);
 				programPart();
 				}
 				}
-				setState(25); 
+				setState(27); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__9) | (1L << IDENTIFIER))) != 0) );
@@ -163,27 +164,27 @@ public class PCParser extends Parser {
 		ProgramPartContext _localctx = new ProgramPartContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_programPart);
 		try {
-			setState(30);
+			setState(32);
 			switch (_input.LA(1)) {
 			case T__0:
 			case T__2:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(27);
+				setState(29);
 				printStatement();
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(28);
+				setState(30);
 				variableDefinition();
 				}
 				break;
 			case T__9:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(29);
+				setState(31);
 				newLine();
 				}
 				break;
@@ -242,17 +243,17 @@ public class PCParser extends Parser {
 		PrintStatementContext _localctx = new PrintStatementContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_printStatement);
 		try {
-			setState(40);
+			setState(42);
 			switch (_input.LA(1)) {
 			case T__0:
 				_localctx = new PrintContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(32);
-				match(T__0);
-				setState(33);
-				((PrintContext)_localctx).exp = expressions();
 				setState(34);
+				match(T__0);
+				setState(35);
+				((PrintContext)_localctx).exp = expressions();
+				setState(36);
 				match(T__1);
 				}
 				break;
@@ -260,11 +261,11 @@ public class PCParser extends Parser {
 				_localctx = new PrintlnContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(36);
-				match(T__2);
-				setState(37);
-				((PrintlnContext)_localctx).exp = expressions();
 				setState(38);
+				match(T__2);
+				setState(39);
+				((PrintlnContext)_localctx).exp = expressions();
+				setState(40);
 				match(T__1);
 				}
 				break;
@@ -330,21 +331,21 @@ public class PCParser extends Parser {
 		VariableDefinitionContext _localctx = new VariableDefinitionContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_variableDefinition);
 		try {
-			setState(51);
+			setState(53);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				_localctx = new MultipleVariableContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(42);
-				((MultipleVariableContext)_localctx).var = match(IDENTIFIER);
-				setState(43);
-				match(T__3);
 				setState(44);
-				((MultipleVariableContext)_localctx).exp = expressions();
+				((MultipleVariableContext)_localctx).var = match(IDENTIFIER);
 				setState(45);
-				match(T__4);
+				match(T__3);
 				setState(46);
+				((MultipleVariableContext)_localctx).exp = expressions();
+				setState(47);
+				match(T__4);
+				setState(48);
 				variableDefinition();
 				}
 				break;
@@ -352,11 +353,11 @@ public class PCParser extends Parser {
 				_localctx = new LastVariableContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(48);
-				((LastVariableContext)_localctx).var = match(IDENTIFIER);
-				setState(49);
-				match(T__3);
 				setState(50);
+				((LastVariableContext)_localctx).var = match(IDENTIFIER);
+				setState(51);
+				match(T__3);
+				setState(52);
 				((LastVariableContext)_localctx).exp = expressions();
 				}
 				break;
@@ -402,12 +403,12 @@ public class PCParser extends Parser {
 		enterRule(_localctx, 8, RULE_expressions);
 		try {
 			int _alt;
-			setState(63);
+			setState(65);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(54); 
+				setState(56); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -415,7 +416,7 @@ public class PCParser extends Parser {
 					case 1:
 						{
 						{
-						setState(53);
+						setState(55);
 						stringExpression();
 						}
 						}
@@ -423,7 +424,7 @@ public class PCParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(56); 
+					setState(58); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -432,7 +433,7 @@ public class PCParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(59); 
+				setState(61); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -440,7 +441,7 @@ public class PCParser extends Parser {
 					case 1:
 						{
 						{
-						setState(58);
+						setState(60);
 						expression(0);
 						}
 						}
@@ -448,7 +449,7 @@ public class PCParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(61); 
+					setState(63); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -471,11 +472,11 @@ public class PCParser extends Parser {
 		public StringReadContext stringRead() {
 			return getRuleContext(StringReadContext.class,0);
 		}
-		public StringConcatContext stringConcat() {
-			return getRuleContext(StringConcatContext.class,0);
-		}
 		public StringMultiplyContext stringMultiply() {
 			return getRuleContext(StringMultiplyContext.class,0);
+		}
+		public StringConcatContext stringConcat() {
+			return getRuleContext(StringConcatContext.class,0);
 		}
 		public StringExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -492,27 +493,27 @@ public class PCParser extends Parser {
 		StringExpressionContext _localctx = new StringExpressionContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_stringExpression);
 		try {
-			setState(68);
+			setState(70);
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(65);
+				setState(67);
 				stringRead();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(66);
-				stringConcat();
+				setState(68);
+				stringMultiply();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(67);
-				stringMultiply();
+				setState(69);
+				stringConcat();
 				}
 				break;
 			}
@@ -539,22 +540,26 @@ public class PCParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class StringAddStringContext extends StringConcatContext {
-		public Token str;
-		public TerminalNode STRING() { return getToken(PCParser.STRING, 0); }
-		public StringAddStringContext(StringConcatContext ctx) { copyFrom(ctx); }
+	public static class StringAddVariableContext extends StringConcatContext {
+		public Token var;
+		public StringConcatAddContext right;
+		public TerminalNode IDENTIFIER() { return getToken(PCParser.IDENTIFIER, 0); }
+		public StringConcatAddContext stringConcatAdd() {
+			return getRuleContext(StringConcatAddContext.class,0);
+		}
+		public StringAddVariableContext(StringConcatContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddString(this);
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 	public static class StringAddContext extends StringConcatContext {
-		public Token var;
-		public StringConcatContext right;
-		public TerminalNode IDENTIFIER() { return getToken(PCParser.IDENTIFIER, 0); }
-		public StringConcatContext stringConcat() {
-			return getRuleContext(StringConcatContext.class,0);
+		public Token str;
+		public StringConcatAddContext right;
+		public TerminalNode STRING() { return getToken(PCParser.STRING, 0); }
+		public StringConcatAddContext stringConcatAdd() {
+			return getRuleContext(StringConcatAddContext.class,0);
 		}
 		public StringAddContext(StringConcatContext ctx) { copyFrom(ctx); }
 		@Override
@@ -563,67 +568,35 @@ public class PCParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class StringAddDigitContext extends StringConcatContext {
-		public Token digit;
-		public TerminalNode DIGIT() { return getToken(PCParser.DIGIT, 0); }
-		public StringAddDigitContext(StringConcatContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddDigit(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class StringAddDecimalContext extends StringConcatContext {
-		public Token decimal;
-		public TerminalNode DECIMAL() { return getToken(PCParser.DECIMAL, 0); }
-		public StringAddDecimalContext(StringConcatContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddDecimal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 
 	public final StringConcatContext stringConcat() throws RecognitionException {
 		StringConcatContext _localctx = new StringConcatContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_stringConcat);
 		try {
-			setState(76);
+			setState(78);
 			switch (_input.LA(1)) {
 			case IDENTIFIER:
-				_localctx = new StringAddContext(_localctx);
+				_localctx = new StringAddVariableContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(70);
-				((StringAddContext)_localctx).var = match(IDENTIFIER);
-				setState(71);
-				match(T__5);
 				setState(72);
-				((StringAddContext)_localctx).right = stringConcat();
+				((StringAddVariableContext)_localctx).var = match(IDENTIFIER);
+				setState(73);
+				match(T__5);
+				setState(74);
+				((StringAddVariableContext)_localctx).right = stringConcatAdd(0);
 				}
 				break;
 			case STRING:
-				_localctx = new StringAddStringContext(_localctx);
+				_localctx = new StringAddContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(73);
-				((StringAddStringContext)_localctx).str = match(STRING);
-				}
-				break;
-			case DIGIT:
-				_localctx = new StringAddDigitContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(74);
-				((StringAddDigitContext)_localctx).digit = match(DIGIT);
-				}
-				break;
-			case DECIMAL:
-				_localctx = new StringAddDecimalContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
 				setState(75);
-				((StringAddDecimalContext)_localctx).decimal = match(DECIMAL);
+				((StringAddContext)_localctx).str = match(STRING);
+				setState(76);
+				match(T__5);
+				setState(77);
+				((StringAddContext)_localctx).right = stringConcatAdd(0);
 				}
 				break;
 			default:
@@ -641,6 +614,170 @@ public class PCParser extends Parser {
 		return _localctx;
 	}
 
+	public static class StringConcatAddContext extends ParserRuleContext {
+		public StringConcatAddContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_stringConcatAdd; }
+	 
+		public StringConcatAddContext() { }
+		public void copyFrom(StringConcatAddContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class StringAddConcatContext extends StringConcatAddContext {
+		public StringConcatAddContext left;
+		public StringConcatAddContext right;
+		public List<StringConcatAddContext> stringConcatAdd() {
+			return getRuleContexts(StringConcatAddContext.class);
+		}
+		public StringConcatAddContext stringConcatAdd(int i) {
+			return getRuleContext(StringConcatAddContext.class,i);
+		}
+		public StringAddConcatContext(StringConcatAddContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddConcat(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringAddStringContext extends StringConcatAddContext {
+		public Token str;
+		public TerminalNode STRING() { return getToken(PCParser.STRING, 0); }
+		public StringAddStringContext(StringConcatAddContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringAddVarContext extends StringConcatAddContext {
+		public Token var;
+		public TerminalNode IDENTIFIER() { return getToken(PCParser.IDENTIFIER, 0); }
+		public StringAddVarContext(StringConcatAddContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddVar(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringAddDigitContext extends StringConcatAddContext {
+		public Token digit;
+		public TerminalNode DIGIT() { return getToken(PCParser.DIGIT, 0); }
+		public StringAddDigitContext(StringConcatAddContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddDigit(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringAddDecimalContext extends StringConcatAddContext {
+		public Token decimal;
+		public TerminalNode DECIMAL() { return getToken(PCParser.DECIMAL, 0); }
+		public StringAddDecimalContext(StringConcatAddContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringAddDecimal(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final StringConcatAddContext stringConcatAdd() throws RecognitionException {
+		return stringConcatAdd(0);
+	}
+
+	private StringConcatAddContext stringConcatAdd(int _p) throws RecognitionException {
+		ParserRuleContext _parentctx = _ctx;
+		int _parentState = getState();
+		StringConcatAddContext _localctx = new StringConcatAddContext(_ctx, _parentState);
+		StringConcatAddContext _prevctx = _localctx;
+		int _startState = 14;
+		enterRecursionRule(_localctx, 14, RULE_stringConcatAdd, _p);
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(85);
+			switch (_input.LA(1)) {
+			case IDENTIFIER:
+				{
+				_localctx = new StringAddVarContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
+				setState(81);
+				((StringAddVarContext)_localctx).var = match(IDENTIFIER);
+				}
+				break;
+			case STRING:
+				{
+				_localctx = new StringAddStringContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(82);
+				((StringAddStringContext)_localctx).str = match(STRING);
+				}
+				break;
+			case DIGIT:
+				{
+				_localctx = new StringAddDigitContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(83);
+				((StringAddDigitContext)_localctx).digit = match(DIGIT);
+				}
+				break;
+			case DECIMAL:
+				{
+				_localctx = new StringAddDecimalContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(84);
+				((StringAddDecimalContext)_localctx).decimal = match(DECIMAL);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			_ctx.stop = _input.LT(-1);
+			setState(92);
+			_errHandler.sync(this);
+			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+				if ( _alt==1 ) {
+					if ( _parseListeners!=null ) triggerExitRuleEvent();
+					_prevctx = _localctx;
+					{
+					{
+					_localctx = new StringAddConcatContext(new StringConcatAddContext(_parentctx, _parentState));
+					((StringAddConcatContext)_localctx).left = _prevctx;
+					pushNewRecursionContext(_localctx, _startState, RULE_stringConcatAdd);
+					setState(87);
+					if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+					setState(88);
+					match(T__5);
+					setState(89);
+					((StringAddConcatContext)_localctx).right = stringConcatAdd(6);
+					}
+					} 
+				}
+				setState(94);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			unrollRecursionContexts(_parentctx);
+		}
+		return _localctx;
+	}
+
 	public static class StringMultiplyContext extends ParserRuleContext {
 		public StringMultiplyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -652,32 +789,63 @@ public class PCParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class StringRepeatContext extends StringMultiplyContext {
+	public static class StringRepeatStringContext extends StringMultiplyContext {
+		public Token str;
+		public Token digit;
+		public TerminalNode STRING() { return getToken(PCParser.STRING, 0); }
+		public TerminalNode DIGIT() { return getToken(PCParser.DIGIT, 0); }
+		public StringRepeatStringContext(StringMultiplyContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringRepeatString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringRepeatVarContext extends StringMultiplyContext {
 		public Token var;
 		public Token digit;
 		public TerminalNode IDENTIFIER() { return getToken(PCParser.IDENTIFIER, 0); }
 		public TerminalNode DIGIT() { return getToken(PCParser.DIGIT, 0); }
-		public StringRepeatContext(StringMultiplyContext ctx) { copyFrom(ctx); }
+		public StringRepeatVarContext(StringMultiplyContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringRepeat(this);
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitStringRepeatVar(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
 	public final StringMultiplyContext stringMultiply() throws RecognitionException {
 		StringMultiplyContext _localctx = new StringMultiplyContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_stringMultiply);
+		enterRule(_localctx, 16, RULE_stringMultiply);
 		try {
-			_localctx = new StringRepeatContext(_localctx);
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(78);
-			((StringRepeatContext)_localctx).var = match(IDENTIFIER);
-			setState(79);
-			match(T__6);
-			setState(80);
-			((StringRepeatContext)_localctx).digit = match(DIGIT);
+			setState(101);
+			switch (_input.LA(1)) {
+			case IDENTIFIER:
+				_localctx = new StringRepeatVarContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(95);
+				((StringRepeatVarContext)_localctx).var = match(IDENTIFIER);
+				setState(96);
+				match(T__6);
+				setState(97);
+				((StringRepeatVarContext)_localctx).digit = match(DIGIT);
+				}
+				break;
+			case STRING:
+				_localctx = new StringRepeatStringContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(98);
+				((StringRepeatStringContext)_localctx).str = match(STRING);
+				setState(99);
+				match(T__6);
+				setState(100);
+				((StringRepeatStringContext)_localctx).digit = match(DIGIT);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -715,12 +883,12 @@ public class PCParser extends Parser {
 
 	public final StringReadContext stringRead() throws RecognitionException {
 		StringReadContext _localctx = new StringReadContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_stringRead);
+		enterRule(_localctx, 18, RULE_stringRead);
 		try {
 			_localctx = new StringContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
+			setState(103);
 			((StringContext)_localctx).str = match(STRING);
 			}
 		}
@@ -850,13 +1018,13 @@ public class PCParser extends Parser {
 		int _parentState = getState();
 		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 18;
-		enterRecursionRule(_localctx, 18, RULE_expression, _p);
+		int _startState = 20;
+		enterRecursionRule(_localctx, 20, RULE_expression, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(88);
+			setState(109);
 			switch (_input.LA(1)) {
 			case DIGIT:
 				{
@@ -864,7 +1032,7 @@ public class PCParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(85);
+				setState(106);
 				((DigitContext)_localctx).digit = match(DIGIT);
 				}
 				break;
@@ -873,7 +1041,7 @@ public class PCParser extends Parser {
 				_localctx = new DecimalContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(86);
+				setState(107);
 				((DecimalContext)_localctx).decimal = match(DECIMAL);
 				}
 				break;
@@ -882,7 +1050,7 @@ public class PCParser extends Parser {
 				_localctx = new VariableContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(87);
+				setState(108);
 				((VariableContext)_localctx).var = match(IDENTIFIER);
 				}
 				break;
@@ -890,26 +1058,26 @@ public class PCParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(104);
+			setState(125);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(102);
-					switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
+					setState(123);
+					switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
 					case 1:
 						{
 						_localctx = new DivideContext(new ExpressionContext(_parentctx, _parentState));
 						((DivideContext)_localctx).leftExp = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(90);
+						setState(111);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(91);
+						setState(112);
 						match(T__7);
-						setState(92);
+						setState(113);
 						((DivideContext)_localctx).rightExp = expression(8);
 						}
 						break;
@@ -918,11 +1086,11 @@ public class PCParser extends Parser {
 						_localctx = new MultiplyContext(new ExpressionContext(_parentctx, _parentState));
 						((MultiplyContext)_localctx).leftExp = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(93);
+						setState(114);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(94);
+						setState(115);
 						match(T__6);
-						setState(95);
+						setState(116);
 						((MultiplyContext)_localctx).rightExp = expression(7);
 						}
 						break;
@@ -931,11 +1099,11 @@ public class PCParser extends Parser {
 						_localctx = new SubtractContext(new ExpressionContext(_parentctx, _parentState));
 						((SubtractContext)_localctx).leftExp = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(96);
+						setState(117);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(97);
+						setState(118);
 						match(T__8);
-						setState(98);
+						setState(119);
 						((SubtractContext)_localctx).rightExp = expression(6);
 						}
 						break;
@@ -944,20 +1112,20 @@ public class PCParser extends Parser {
 						_localctx = new AddContext(new ExpressionContext(_parentctx, _parentState));
 						((AddContext)_localctx).leftExp = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(99);
+						setState(120);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(100);
+						setState(121);
 						match(T__5);
-						setState(101);
+						setState(122);
 						((AddContext)_localctx).rightExp = expression(5);
 						}
 						break;
 					}
 					} 
 				}
-				setState(106);
+				setState(127);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 			}
 			}
 		}
@@ -994,12 +1162,12 @@ public class PCParser extends Parser {
 
 	public final NewLineContext newLine() throws RecognitionException {
 		NewLineContext _localctx = new NewLineContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_newLine);
+		enterRule(_localctx, 22, RULE_newLine);
 		try {
 			_localctx = new LineContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(107);
+			setState(128);
 			match(T__9);
 			}
 		}
@@ -1016,54 +1184,68 @@ public class PCParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 9:
+		case 7:
+			return stringConcatAdd_sempred((StringConcatAddContext)_localctx, predIndex);
+		case 10:
 			return expression_sempred((ExpressionContext)_localctx, predIndex);
+		}
+		return true;
+	}
+	private boolean stringConcatAdd_sempred(StringConcatAddContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 0:
+			return precpred(_ctx, 5);
 		}
 		return true;
 	}
 	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0:
-			return precpred(_ctx, 7);
 		case 1:
-			return precpred(_ctx, 6);
+			return precpred(_ctx, 7);
 		case 2:
-			return precpred(_ctx, 5);
+			return precpred(_ctx, 6);
 		case 3:
+			return precpred(_ctx, 5);
+		case 4:
 			return precpred(_ctx, 4);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21p\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\3\2\6\2\32\n\2\r\2\16\2\33\3\3\3\3\3\3\5\3!\n\3\3\4\3\4\3\4\3\4"+
-		"\3\4\3\4\3\4\3\4\5\4+\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\5\5\66\n"+
-		"\5\3\6\6\69\n\6\r\6\16\6:\3\6\6\6>\n\6\r\6\16\6?\5\6B\n\6\3\7\3\7\3\7"+
-		"\5\7G\n\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bO\n\b\3\t\3\t\3\t\3\t\3\n\3\n\3\13"+
-		"\3\13\3\13\3\13\5\13[\n\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\7\13i\n\13\f\13\16\13l\13\13\3\f\3\f\3\f\2\3\24\r\2\4"+
-		"\6\b\n\f\16\20\22\24\26\2\2w\2\31\3\2\2\2\4 \3\2\2\2\6*\3\2\2\2\b\65\3"+
-		"\2\2\2\nA\3\2\2\2\fF\3\2\2\2\16N\3\2\2\2\20P\3\2\2\2\22T\3\2\2\2\24Z\3"+
-		"\2\2\2\26m\3\2\2\2\30\32\5\4\3\2\31\30\3\2\2\2\32\33\3\2\2\2\33\31\3\2"+
-		"\2\2\33\34\3\2\2\2\34\3\3\2\2\2\35!\5\6\4\2\36!\5\b\5\2\37!\5\26\f\2 "+
-		"\35\3\2\2\2 \36\3\2\2\2 \37\3\2\2\2!\5\3\2\2\2\"#\7\3\2\2#$\5\n\6\2$%"+
-		"\7\4\2\2%+\3\2\2\2&\'\7\5\2\2\'(\5\n\6\2()\7\4\2\2)+\3\2\2\2*\"\3\2\2"+
-		"\2*&\3\2\2\2+\7\3\2\2\2,-\7\20\2\2-.\7\6\2\2./\5\n\6\2/\60\7\7\2\2\60"+
-		"\61\5\b\5\2\61\66\3\2\2\2\62\63\7\20\2\2\63\64\7\6\2\2\64\66\5\n\6\2\65"+
-		",\3\2\2\2\65\62\3\2\2\2\66\t\3\2\2\2\679\5\f\7\28\67\3\2\2\29:\3\2\2\2"+
-		":8\3\2\2\2:;\3\2\2\2;B\3\2\2\2<>\5\24\13\2=<\3\2\2\2>?\3\2\2\2?=\3\2\2"+
-		"\2?@\3\2\2\2@B\3\2\2\2A8\3\2\2\2A=\3\2\2\2B\13\3\2\2\2CG\5\22\n\2DG\5"+
-		"\16\b\2EG\5\20\t\2FC\3\2\2\2FD\3\2\2\2FE\3\2\2\2G\r\3\2\2\2HI\7\20\2\2"+
-		"IJ\7\b\2\2JO\5\16\b\2KO\7\17\2\2LO\7\r\2\2MO\7\16\2\2NH\3\2\2\2NK\3\2"+
-		"\2\2NL\3\2\2\2NM\3\2\2\2O\17\3\2\2\2PQ\7\20\2\2QR\7\t\2\2RS\7\r\2\2S\21"+
-		"\3\2\2\2TU\7\17\2\2U\23\3\2\2\2VW\b\13\1\2W[\7\r\2\2X[\7\16\2\2Y[\7\20"+
-		"\2\2ZV\3\2\2\2ZX\3\2\2\2ZY\3\2\2\2[j\3\2\2\2\\]\f\t\2\2]^\7\n\2\2^i\5"+
-		"\24\13\n_`\f\b\2\2`a\7\t\2\2ai\5\24\13\tbc\f\7\2\2cd\7\13\2\2di\5\24\13"+
-		"\bef\f\6\2\2fg\7\b\2\2gi\5\24\13\7h\\\3\2\2\2h_\3\2\2\2hb\3\2\2\2he\3"+
-		"\2\2\2il\3\2\2\2jh\3\2\2\2jk\3\2\2\2k\25\3\2\2\2lj\3\2\2\2mn\7\f\2\2n"+
-		"\27\3\2\2\2\16\33 *\65:?AFNZhj";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21\u0085\4\2\t\2"+
+		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
+		"\t\13\4\f\t\f\4\r\t\r\3\2\6\2\34\n\2\r\2\16\2\35\3\3\3\3\3\3\5\3#\n\3"+
+		"\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4-\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5"+
+		"\3\5\3\5\5\58\n\5\3\6\6\6;\n\6\r\6\16\6<\3\6\6\6@\n\6\r\6\16\6A\5\6D\n"+
+		"\6\3\7\3\7\3\7\5\7I\n\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bQ\n\b\3\t\3\t\3\t\3"+
+		"\t\3\t\5\tX\n\t\3\t\3\t\3\t\7\t]\n\t\f\t\16\t`\13\t\3\n\3\n\3\n\3\n\3"+
+		"\n\3\n\5\nh\n\n\3\13\3\13\3\f\3\f\3\f\3\f\5\fp\n\f\3\f\3\f\3\f\3\f\3\f"+
+		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\7\f~\n\f\f\f\16\f\u0081\13\f\3\r\3\r\3\r"+
+		"\2\4\20\26\16\2\4\6\b\n\f\16\20\22\24\26\30\2\2\u008e\2\33\3\2\2\2\4\""+
+		"\3\2\2\2\6,\3\2\2\2\b\67\3\2\2\2\nC\3\2\2\2\fH\3\2\2\2\16P\3\2\2\2\20"+
+		"W\3\2\2\2\22g\3\2\2\2\24i\3\2\2\2\26o\3\2\2\2\30\u0082\3\2\2\2\32\34\5"+
+		"\4\3\2\33\32\3\2\2\2\34\35\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36\3\3"+
+		"\2\2\2\37#\5\6\4\2 #\5\b\5\2!#\5\30\r\2\"\37\3\2\2\2\" \3\2\2\2\"!\3\2"+
+		"\2\2#\5\3\2\2\2$%\7\3\2\2%&\5\n\6\2&\'\7\4\2\2\'-\3\2\2\2()\7\5\2\2)*"+
+		"\5\n\6\2*+\7\4\2\2+-\3\2\2\2,$\3\2\2\2,(\3\2\2\2-\7\3\2\2\2./\7\20\2\2"+
+		"/\60\7\6\2\2\60\61\5\n\6\2\61\62\7\7\2\2\62\63\5\b\5\2\638\3\2\2\2\64"+
+		"\65\7\20\2\2\65\66\7\6\2\2\668\5\n\6\2\67.\3\2\2\2\67\64\3\2\2\28\t\3"+
+		"\2\2\29;\5\f\7\2:9\3\2\2\2;<\3\2\2\2<:\3\2\2\2<=\3\2\2\2=D\3\2\2\2>@\5"+
+		"\26\f\2?>\3\2\2\2@A\3\2\2\2A?\3\2\2\2AB\3\2\2\2BD\3\2\2\2C:\3\2\2\2C?"+
+		"\3\2\2\2D\13\3\2\2\2EI\5\24\13\2FI\5\22\n\2GI\5\16\b\2HE\3\2\2\2HF\3\2"+
+		"\2\2HG\3\2\2\2I\r\3\2\2\2JK\7\20\2\2KL\7\b\2\2LQ\5\20\t\2MN\7\17\2\2N"+
+		"O\7\b\2\2OQ\5\20\t\2PJ\3\2\2\2PM\3\2\2\2Q\17\3\2\2\2RS\b\t\1\2SX\7\20"+
+		"\2\2TX\7\17\2\2UX\7\r\2\2VX\7\16\2\2WR\3\2\2\2WT\3\2\2\2WU\3\2\2\2WV\3"+
+		"\2\2\2X^\3\2\2\2YZ\f\7\2\2Z[\7\b\2\2[]\5\20\t\b\\Y\3\2\2\2]`\3\2\2\2^"+
+		"\\\3\2\2\2^_\3\2\2\2_\21\3\2\2\2`^\3\2\2\2ab\7\20\2\2bc\7\t\2\2ch\7\r"+
+		"\2\2de\7\17\2\2ef\7\t\2\2fh\7\r\2\2ga\3\2\2\2gd\3\2\2\2h\23\3\2\2\2ij"+
+		"\7\17\2\2j\25\3\2\2\2kl\b\f\1\2lp\7\r\2\2mp\7\16\2\2np\7\20\2\2ok\3\2"+
+		"\2\2om\3\2\2\2on\3\2\2\2p\177\3\2\2\2qr\f\t\2\2rs\7\n\2\2s~\5\26\f\nt"+
+		"u\f\b\2\2uv\7\t\2\2v~\5\26\f\twx\f\7\2\2xy\7\13\2\2y~\5\26\f\bz{\f\6\2"+
+		"\2{|\7\b\2\2|~\5\26\f\7}q\3\2\2\2}t\3\2\2\2}w\3\2\2\2}z\3\2\2\2~\u0081"+
+		"\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\27\3\2\2\2\u0081\177\3\2"+
+		"\2\2\u0082\u0083\7\f\2\2\u0083\31\3\2\2\2\21\35\",\67<ACHPW^go}\177";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

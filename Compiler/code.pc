@@ -1,3 +1,5 @@
-d="Hello "
-d=d*8
-println(d)
+e="h"+9+"p"+0.9
+r=e+"h"+98
+println(e)
+println(r)
+println(e+r)
