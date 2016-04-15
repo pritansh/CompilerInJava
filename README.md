@@ -5,7 +5,7 @@ How to run this :-
 
 Using Eclipse -
 
-Import project into eclipse and edit code in Compiler/code.pc and compile Main.java to execute 
+Import project into eclipse and edit code in CompilerInJava/Compiler/code.pc and compile Main.java to execute 
 
 This includes basic operations like +(addition), -(subtraction), *(multiplication), /(division)
 
