@@ -15,7 +15,15 @@ printStatement : 'print(' exp=expressions ')' #Print
 
 variableDefinition : var=IDENTIFIER '=' exp=expressions ',' variableDefinition #MultipleVariable
 				   | var=IDENTIFIER '=' exp=expressions #LastVariable
+				   | var=IDENTIFIER '=[' digit=DIGIT ']' data=type #ArrayVariable
+				   | var=IDENTIFIER '::' digit=DIGIT '=' exp=expressions #ArrayIndexVariable
+				   | var=IDENTIFIER '::' index=IDENTIFIER '=' exp=expressions #ArrayIndexVar
 				   ;	
+				   
+type : 'i'
+	 | 'f'
+	 | 'S'
+	 ;
 				   
 whileLoop : 'while ' exp=expressions ':' onTrue=block ';' #While
 		  ;
@@ -50,7 +58,9 @@ stringConcat : var=IDENTIFIER '+' right=stringConcatAdd #StringAddVariable
 			 | str=STRING '+' right=stringConcatAdd #StringAdd
 			 ;
 			 
-stringConcatAdd : left=stringConcatAdd '+' right=stringConcatAdd #StringAddConcat 			  
+stringConcatAdd : left=stringConcatAdd '+' right=stringConcatAdd #StringAddConcat
+		        | var=IDENTIFIER '::' digit=DIGIT #StringArrayDigit
+		        | var=IDENTIFIER '::' index=IDENTIFIER #StringArrayVariable		  
 				| var=IDENTIFIER #StringAddVar
 			    | str=STRING #StringAddString
 			    | digit=DIGIT #StringAddDigit
@@ -68,6 +78,8 @@ expression : leftExp=expression '/' rightExp=expression #Divide
 		   | leftExp=expression '*' rightExp=expression #Multiply
 		   | leftExp=expression '-' rightExp=expression #Subtract
 		   | leftExp=expression '+' rightExp=expression #Add
+		   | var=IDENTIFIER '::' digit=DIGIT #ArrayDigit
+		   | var=IDENTIFIER '::' index=IDENTIFIER #ArrayVar
 		   | digit=DIGIT #Digit
 		   | decimal=DECIMAL #Decimal
 		   | var=IDENTIFIER #Variable

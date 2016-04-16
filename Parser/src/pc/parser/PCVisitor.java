@@ -51,6 +51,33 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLastVariable(PCParser.LastVariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ArrayVariable}
+	 * labeled alternative in {@link PCParser#variableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayVariable(PCParser.ArrayVariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayIndexVariable}
+	 * labeled alternative in {@link PCParser#variableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayIndexVariable(PCParser.ArrayIndexVariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayIndexVar}
+	 * labeled alternative in {@link PCParser#variableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayIndexVar(PCParser.ArrayIndexVarContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PCParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(PCParser.TypeContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code While}
 	 * labeled alternative in {@link PCParser#whileLoop}.
 	 * @param ctx the parse tree
@@ -160,6 +187,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringAddConcat(PCParser.StringAddConcatContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code StringArrayDigit}
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringArrayDigit(PCParser.StringArrayDigitContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StringAddString}
 	 * labeled alternative in {@link PCParser#stringConcatAdd}.
 	 * @param ctx the parse tree
@@ -180,6 +214,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStringAddDigit(PCParser.StringAddDigitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StringArrayVariable}
+	 * labeled alternative in {@link PCParser#stringConcatAdd}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringArrayVariable(PCParser.StringArrayVariableContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code StringAddDecimal}
 	 * labeled alternative in {@link PCParser#stringConcatAdd}.
@@ -237,6 +278,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(PCParser.VariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ArrayVar}
+	 * labeled alternative in {@link PCParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayVar(PCParser.ArrayVarContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Decimal}
 	 * labeled alternative in {@link PCParser#expression}.
 	 * @param ctx the parse tree
@@ -257,6 +305,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubtract(PCParser.SubtractContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayDigit}
+	 * labeled alternative in {@link PCParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDigit(PCParser.ArrayDigitContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Line}
 	 * labeled alternative in {@link PCParser#newLine}.

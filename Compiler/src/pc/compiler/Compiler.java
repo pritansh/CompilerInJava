@@ -10,6 +10,11 @@ import pc.compiler.helper.Helper;
 import pc.compiler.symbolTable.SymbolTableNode;
 import pc.parser.PCBaseVisitor;
 import pc.parser.PCParser.AddContext;
+import pc.parser.PCParser.ArrayDigitContext;
+import pc.parser.PCParser.ArrayIndexVarContext;
+import pc.parser.PCParser.ArrayIndexVariableContext;
+import pc.parser.PCParser.ArrayVarContext;
+import pc.parser.PCParser.ArrayVariableContext;
 import pc.parser.PCParser.DecimalContext;
 import pc.parser.PCParser.DigitContext;
 import pc.parser.PCParser.DivideContext;
@@ -36,6 +41,8 @@ import pc.parser.PCParser.StringAddDigitContext;
 import pc.parser.PCParser.StringAddStringContext;
 import pc.parser.PCParser.StringAddVarContext;
 import pc.parser.PCParser.StringAddVariableContext;
+import pc.parser.PCParser.StringArrayDigitContext;
+import pc.parser.PCParser.StringArrayVariableContext;
 import pc.parser.PCParser.StringContext;
 import pc.parser.PCParser.StringRepeatStringContext;
 import pc.parser.PCParser.StringRepeatVarContext;
@@ -51,7 +58,7 @@ public class Compiler extends PCBaseVisitor<String>{
 	private boolean floatBool = false;
 	private Helper helper;
 	private HashMap<String,SymbolTableNode> symbolTable = new HashMap<>();
-	private int lineNumber = 1, branchCount = -1;
+	private int lineNumber = 1, branchCount = -1, arrayCount = 0;
 	String begPrint = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;"; 
 	String endPrint = "\ninvokevirtual java/io/PrintStream/print";
 	
@@ -101,7 +108,7 @@ public class Compiler extends PCBaseVisitor<String>{
 		appendToFile(endPrint + "ln(");
 		if(type!=null && type.equals("Ljava/lang/String;"))
 			appendToFile(type + ")V");
-		else
+		else if(type!=null)
 			appendToFile(type.toUpperCase() + ")V");
 		return null;
 	}
@@ -187,6 +194,19 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitStringAddConcat(StringAddConcatContext ctx) {
 		visit(ctx.left);
 		visit(ctx.right);
+		return null;
+	}
+
+	public String visitStringArrayDigit(StringArrayDigitContext ctx) {
+		type = "i";
+		appendToFile("\nldc " + ctx.digit.getText());
+		if(!type.equals("Ljava/lang/String;"))
+			type = type.toUpperCase();
+		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder");
+		return null;
+	}
+	
+	public String visitStringArrayVariable(StringArrayVariableContext ctx) {
 		return null;
 	}
 	
@@ -303,6 +323,108 @@ public class Compiler extends PCBaseVisitor<String>{
 		if(type!=null && type.equals("Ljava/lang/String;"))
 			type = "a";
 		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
+		return null;
+	}
+	
+	public String visitArrayVariable(ArrayVariableContext ctx) {
+		if(symbolTable.get(ctx.var.getText())==null) {
+			String temp = ctx.data.getText();
+			if(temp.equals("i"))
+				type = "i";
+			else if(temp.equals("f"))
+				type = "f";
+			else if(temp.equals("S"))
+				type = "Ljava/lang/String;";
+			arrayCount = symbolTable.size();
+			symbolTable.put(ctx.var.getText(), new SymbolTableNode(ctx.var.getText(), type, symbolTable.size()));
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\nbipush " + ctx.digit.getText() + "\n");
+			if(type.equals("a"))
+				appendToFile("a");
+			appendToFile("newarray ");
+			if(type.equals("i"))
+				appendToFile("int");
+			else if(type.equals("f"))
+				appendToFile("float");
+			else if(type.equals("a"))
+				appendToFile("java/lang/String");
+			appendToFile("\nastore " + arrayCount);
+		}
+		return null;
+	}
+	
+	public String visitArrayIndexVariable(ArrayIndexVariableContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			appendToFile("\naload " + tmp);
+			appendToFile("\nldc " + ctx.digit.getText());
+			visit(ctx.exp);
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "astore ");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+		}
+		else
+			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);
+		return null;
+	}
+	
+	public String visitArrayIndexVar(ArrayIndexVarContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			appendToFile("\naload " + tmp);
+			if(symbolTable.get(ctx.index.getText())!=null) {
+				SymbolTableNode temp= symbolTable.get(ctx.index.getText());
+				appendToFile("\niload " + temp);
+			}
+			else
+				throw new VariableNotDefined(ctx.getText(), ctx.index.getText(), lineNumber);
+			visit(ctx.exp);
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "astore ");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+		}
+		else
+			throw new VariableNotDefined(ctx.getText(), ctx.var.getText(), lineNumber);
+		return null;
+	}
+	
+	public String visitArrayDigit(ArrayDigitContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			appendToFile("\naload " + tmp);
+			type = tmp.getType();
+			appendToFile("\nldc " + ctx.digit.getText());
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "aload");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+		}
+		return null;
+	}
+	
+	public String visitArrayVar(ArrayVarContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			appendToFile("\naload " + tmp);
+			type = tmp.getType();
+			if(symbolTable.get(ctx.index.getText())!=null) {
+				SymbolTableNode temp= symbolTable.get(ctx.index.getText());
+				appendToFile("\niload " + temp);
+			}
+			else
+				throw new VariableNotDefined(ctx.getText(), ctx.index.getText(), lineNumber);
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "aload");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+		}
 		return null;
 	}
 	
