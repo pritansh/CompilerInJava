@@ -83,6 +83,7 @@ For string -> null,!null,==,!= (memory reference)
 		println("not null")
 	else:
 		println("not deined")
+	;
 	Result :- not null
 
 >Basic if-else
