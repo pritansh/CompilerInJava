@@ -15,7 +15,9 @@ Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and se
 
 ######Basic operations like +(addition), -(subtraction), *(multiplication), /(division)
 
-######Data types and variables 
+######Data types and variables (integer, float, string)
+
+######Control Statements -> If-else
 
 ####Examples :-
 
@@ -66,3 +68,43 @@ Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and se
   	str=str*4
   	println(str)
   	Resutl :- hellohellohellohello
+####If-else : -
+
+For integer and float -> ==,!=,>=,<=,>,<, null,!null
+For string -> null,!null,==,!= (memory reference)
+
+null and !null 
+
+	str="Hello"
+	if str null:
+		println("null")
+	else: if str!null:
+		println("not null")
+	else:
+		println("not deined")
+	Result :- not null
+
+>Basic if-else
+
+	a=4
+	b=3
+	if a>b:
+		println(a)
+	else:
+		println(b)
+	Result :- 4
+	
+>Nested If-else
+	
+	a=4.5
+	b=6.5
+	if a>=b:
+		if a==b:
+			println(a)
+		else:
+			println(b)
+	else: if a<b:
+		println("B"+b)
+	else:
+		println("Not")
+	Result :- B6.5
