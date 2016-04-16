@@ -51,6 +51,13 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLastVariable(PCParser.LastVariableContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code While}
+	 * labeled alternative in {@link PCParser#whileLoop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile(PCParser.WhileContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code IfElse}
 	 * labeled alternative in {@link PCParser#conditionStatement}.
 	 * @param ctx the parse tree
@@ -77,13 +84,6 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNotNull(PCParser.NotNullContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link PCParser#conditionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(PCParser.NotContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Equal}
 	 * labeled alternative in {@link PCParser#conditionExpression}.

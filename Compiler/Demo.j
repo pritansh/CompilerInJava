@@ -6,37 +6,27 @@
 .limit locals 100
 ldc 4
 istore 0
-ldc 3
+ldc 7
 istore 1
+Label0:
 iload 0
+ldc 3
+iadd
 iload 1
 if_icmpeq True0
-iload 0
-iload 1
-if_icmpne True1
-getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc "Not Equal"
-invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-goto EndIf1
-True1:
-getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc "Not Equal Not"
-invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-EndIf1:
-goto EndIf1
+goto EndIf0
 True0:
+getstatic java/lang/System/out Ljava/io/PrintStream;
+iload 0
+invokevirtual java/io/PrintStream/println(I)V
+iload 0
 ldc 1
-ldc 3
-if_icmpeq True2
-getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc "Equal Not"
-invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-goto EndIf2
-True2:
-getstatic java/lang/System/out Ljava/io/PrintStream;
-ldc "Equal"
-invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-EndIf2:
+iadd
+istore 0
+goto Label0
 EndIf0:
+getstatic java/lang/System/out Ljava/io/PrintStream;
+iload 0
+invokevirtual java/io/PrintStream/println(I)V
 return
 .end method

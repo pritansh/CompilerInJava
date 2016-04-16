@@ -5,6 +5,7 @@ program : programPart+;
 programPart : printStatement
 		    | variableDefinition
 		    | newLine
+		    | whileLoop
 		    | conditionStatement
 		    ;
 
@@ -16,7 +17,10 @@ variableDefinition : var=IDENTIFIER '=' exp=expressions ',' variableDefinition #
 				   | var=IDENTIFIER '=' exp=expressions #LastVariable
 				   ;	
 				   
-conditionStatement : 'if ' exp=expressions ':' onTrue=block 'else:' onFalse=block #IfElse
+whileLoop : 'while ' exp=expressions ':' onTrue=block ';' #While
+		  ;
+				   
+conditionStatement : 'if ' exp=expressions ':' onTrue=block 'else:' onFalse=block ';' #IfElse
 				   ;
 				   
 block : programPart+
@@ -24,7 +28,6 @@ block : programPart+
 	 
 conditionExpression : exp=expression ' null' #Null
 					| exp=expression '!null' #NotNull
-					| '!' exp=expression #Not
 					| left=expression '==' right=expression #Equal
 					| left=expression '!=' right=expression #NotEqual
 					| left=expression '<=' right=expression #LessEqual
@@ -33,9 +36,9 @@ conditionExpression : exp=expression ' null' #Null
 					| left=expression '>' right=expression #High
 					;
 				   
-expressions : expression+
+expressions : conditionExpression+
+			| expression+
 			| stringExpression+
-			| conditionExpression+
 			;	   
 
 stringExpression : stringRead

@@ -41,6 +41,7 @@ import pc.parser.PCParser.StringRepeatStringContext;
 import pc.parser.PCParser.StringRepeatVarContext;
 import pc.parser.PCParser.SubtractContext;
 import pc.parser.PCParser.VariableContext;
+import pc.parser.PCParser.WhileContext;
 
 public class Compiler extends PCBaseVisitor<String>{
 
@@ -315,9 +316,9 @@ public class Compiler extends PCBaseVisitor<String>{
 			fl++;
 		else if(type.equals("f") && fl==0)
 			appendToFile("\nf2i");
-		if(type.equals("Ljava/lang/String;"))
+		if(type.equals("Ljava/lang/String;")) 
 			appendToFile("\nif_acmpeq ");
-		else if(type.equals("i"))
+		else if(type.equals("i")) 
 			appendToFile("\nif_icmpeq ");
 		else if(fl==2) {
 			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
@@ -336,9 +337,9 @@ public class Compiler extends PCBaseVisitor<String>{
 			fl++;
 		else if(type.equals("f") && fl==0)
 			appendToFile("\nf2i");
-		if(type.equals("Ljava/lang/String;"))
+		if(type.equals("Ljava/lang/String;")) 
 			appendToFile("\nif_acmpne ");
-		else if(type.equals("i"))
+		else if(type.equals("i")) 
 			appendToFile("\nif_icmpne ");
 		else if(fl==2) {
 			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
@@ -376,7 +377,7 @@ public class Compiler extends PCBaseVisitor<String>{
 			fl++;
 		else if(type.equals("f") && fl==0)
 			appendToFile("\nf2i");
-		if(type.equals("i"))
+		if(type.equals("i")) 
 			appendToFile("\nif_icmple ");
 		else if(fl==2) {
 			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
@@ -395,7 +396,7 @@ public class Compiler extends PCBaseVisitor<String>{
 			fl++;
 		else if(type.equals("f") && fl==0)
 			appendToFile("\nf2i");
-		if(type.equals("i"))
+		if(type.equals("i")) 
 			appendToFile("\nif_icmpgt ");
 		else if(fl==2) {
 			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
@@ -414,7 +415,7 @@ public class Compiler extends PCBaseVisitor<String>{
 			fl++;
 		else if(type.equals("f") && fl==0)
 			appendToFile("\nf2i");
-		if(type.equals("i"))
+		if(type.equals("i")) 
 			appendToFile("\nif_icmplt ");
 		else if(fl==2) {
 			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
@@ -443,6 +444,19 @@ public class Compiler extends PCBaseVisitor<String>{
 		visit(ctx.onFalse);
 		appendToFile("\ngoto EndIf" + branchCount + "\nTrue" + branchNum + ":");
 		visit(ctx.onTrue);
+		appendToFile("\nEndIf" + branchNum + ":");
+		return null;
+	}
+	
+	public String visitWhile(WhileContext ctx) {
+		branchCount++;
+		int branchNum = branchCount;
+		appendToFile("\nLabel" + branchNum + ":");
+		visit(ctx.exp);
+		appendToFile("True" + branchCount);
+		appendToFile("\ngoto EndIf" + branchCount + "\nTrue" + branchNum + ":");
+		visit(ctx.onTrue);
+		appendToFile("\ngoto Label" + branchNum);
 		appendToFile("\nEndIf" + branchNum + ":");
 		return null;
 	}

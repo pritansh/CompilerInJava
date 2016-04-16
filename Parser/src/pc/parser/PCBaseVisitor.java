@@ -59,6 +59,13 @@ public class PCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PCV
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitWhile(PCParser.WhileContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitIfElse(PCParser.IfElseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -81,13 +88,6 @@ public class PCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PCV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitNotNull(PCParser.NotNullContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitNot(PCParser.NotContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
