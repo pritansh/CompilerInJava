@@ -17,6 +17,8 @@ Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and se
 
 ######Data types and variables (integer, float, string)
 
+######Arrays for data types (integer, float, string)
+
 ######Control Statements -> If-else, while loop
 
 ####Examples :-
@@ -133,3 +135,49 @@ For string -> null,!null,==,!= (memory reference)
 		  8
 		  9
 		  10
+
+####Arrays : -
+
+######Bugs - 
+>Printing array values along with string does not work but works for integer and float
+>Assigning a value to a float array value does not work for (float + variable) but works for (variable + float)
+
+>For integer
+
+	a=[2]i
+	a::0=1
+	a::1=2
+	println(a::0)
+	println(a::1)
+	Resutl :- 1
+		  2
+		  
+>For float
+
+	a=[5]f
+	b=0
+	while b<5:
+		a::b=b+4.5
+		println(a::b)
+		b=b+1
+	;
+	Result :- 4.5
+		  5.5
+		  6.5
+		  7.5
+		  8.5
+
+>For string
+
+	a=[5]S
+	b=0
+	while b<5:
+		a::0="Hello"+b
+		println(a::0)
+		b=b+1
+	;
+	Result :- Hello0
+		  Hello1
+		  Hello2
+		  Hello3
+		  Hello4
