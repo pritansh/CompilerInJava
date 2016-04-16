@@ -71,6 +71,7 @@ Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and se
 ####If-else : -
 
 For integer and float -> ==,!=,>=,<=,>,<, null,!null
+
 For string -> null,!null,==,!= (memory reference)
 
 null and !null 
@@ -105,6 +106,8 @@ null and !null
 			println(b)
 	else: if a<b:
 		println("B"+b)
+		println("greater than A"+a)
 	else:
 		println("Not")
 	Result :- B6.5
+		  greater than A4.5
