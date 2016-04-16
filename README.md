@@ -74,7 +74,7 @@ For integer and float -> ==,!=,>=,<=,>,<, null,!null
 
 For string -> null,!null,==,!= (memory reference)
 
-null and !null 
+>null and !null 
 
 	str="Hello"
 	if str null:
