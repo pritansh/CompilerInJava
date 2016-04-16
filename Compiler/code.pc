@@ -1,7 +1,7 @@
-a=[10]S
-b=0
-while b<10:
-	a::0="Hello"+b
-	println(a::0)
-	b=b+1
-;
+a=[5]f
+	b=0
+	while b<5:
+		a::b=b+4.5
+		println(a::b+4.3)
+		b=b+1
+	;
