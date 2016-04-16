@@ -17,7 +17,7 @@ Run either .bat (WINDOWS) or .sh(LINUX) to automatically execute the code and se
 
 ######Data types and variables (integer, float, string)
 
-######Control Statements -> If-else
+######Control Statements -> If-else, while loop
 
 ####Examples :-
 
@@ -93,6 +93,7 @@ For string -> null,!null,==,!= (memory reference)
 		println(a)
 	else:
 		println(b)
+	;
 	Result :- 4
 	
 >Nested If-else
@@ -109,5 +110,25 @@ For string -> null,!null,==,!= (memory reference)
 		println("greater than A"+a)
 	else:
 		println("Not")
+	;
 	Result :- B6.5
 		  greater than A4.5
+
+####Loops
+
+>while loop
+
+	a=4
+	b=9
+	while a<=b:
+		println(a)
+		a=a+1
+	;
+	println(a)
+	Result :- 4
+		  5
+		  6
+		  7
+		  8
+		  9
+		  10
