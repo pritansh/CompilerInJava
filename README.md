@@ -174,8 +174,8 @@ For string -> null,!null,==,!= (memory reference)
 	a=[5]S
 	b=0
 	while b<5:
-		a::0="Hello"+b
-		println(a::0)
+		a::b="Hello"+b
+		println(a::b)
 		b=b+1
 	;
 	Result :- Hello0
