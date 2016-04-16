@@ -140,6 +140,7 @@ For string -> null,!null,==,!= (memory reference)
 
 ######Bugs :- 
 >Printing array values along with string does not work but works for integer and float
+
 >Assigning a value to a float array value does not work for (float + variable) but works for (variable + float)
 
 ######Examples :-
