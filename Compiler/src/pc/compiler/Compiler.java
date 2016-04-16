@@ -13,10 +13,19 @@ import pc.parser.PCParser.AddContext;
 import pc.parser.PCParser.DecimalContext;
 import pc.parser.PCParser.DigitContext;
 import pc.parser.PCParser.DivideContext;
+import pc.parser.PCParser.EqualContext;
+import pc.parser.PCParser.HighContext;
+import pc.parser.PCParser.HighEqualContext;
+import pc.parser.PCParser.IfElseContext;
 import pc.parser.PCParser.LastVariableContext;
+import pc.parser.PCParser.LessContext;
+import pc.parser.PCParser.LessEqualContext;
 import pc.parser.PCParser.LineContext;
 import pc.parser.PCParser.MultipleVariableContext;
 import pc.parser.PCParser.MultiplyContext;
+import pc.parser.PCParser.NotEqualContext;
+import pc.parser.PCParser.NotNullContext;
+import pc.parser.PCParser.NullContext;
 import pc.parser.PCParser.PrintContext;
 import pc.parser.PCParser.PrintlnContext;
 import pc.parser.PCParser.ProgramContext;
@@ -41,7 +50,7 @@ public class Compiler extends PCBaseVisitor<String>{
 	private boolean floatBool = false;
 	private Helper helper;
 	private HashMap<String,SymbolTableNode> symbolTable = new HashMap<>();
-	private int lineNumber = 1;
+	private int lineNumber = 1, branchCount = -1;
 	String begPrint = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;"; 
 	String endPrint = "\ninvokevirtual java/io/PrintStream/print";
 	
@@ -293,6 +302,148 @@ public class Compiler extends PCBaseVisitor<String>{
 		if(type!=null && type.equals("Ljava/lang/String;"))
 			type = "a";
 		appendToFile("\n" + type.toLowerCase() + "store " + symbolTable.get(ctx.var.getText()));
+		return null;
+	}
+	
+	public String visitEqual(EqualContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("Ljava/lang/String;"))
+			appendToFile("\nif_acmpeq ");
+		else if(type.equals("i"))
+			appendToFile("\nif_icmpeq ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\nifeq ");
+		}
+		return null;
+	}
+	
+	public String visitNotEqual(NotEqualContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("Ljava/lang/String;"))
+			appendToFile("\nif_acmpne ");
+		else if(type.equals("i"))
+			appendToFile("\nif_icmpne ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\nifne ");
+		}
+		return null;
+	}
+	
+	public String visitHighEqual(HighEqualContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("i"))
+			appendToFile("\nif_icmpge ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\nifge ");
+		}
+		return null;
+	}
+	
+	public String visitLessEqual(LessEqualContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("i"))
+			appendToFile("\nif_icmple ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\nifle ");
+		}
+		return null;
+	}
+	
+	public String visitHigh(HighContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("i"))
+			appendToFile("\nif_icmpgt ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\nifgt ");
+		}
+		return null;
+	}
+	
+	public String visitLess(LessContext ctx) {
+		visit(ctx.left);
+		int fl=0;
+		if(type.equals("f"))
+			fl++;
+		visit(ctx.right);
+		if(type.equals("f") && fl==1)
+			fl++;
+		else if(type.equals("f") && fl==0)
+			appendToFile("\nf2i");
+		if(type.equals("i"))
+			appendToFile("\nif_icmplt ");
+		else if(fl==2) {
+			appendToFile("\nfsub\nldc 0.5\nfadd\nf2i");
+			appendToFile("\niflt ");
+		}
+		return null;
+	}
+	
+	public String visitNull(NullContext ctx) {
+		visit(ctx.exp);
+		appendToFile("\nifnull ");
+		return null;
+	}
+	
+	public String visitNotNull(NotNullContext ctx) {
+		visit(ctx.exp);
+		appendToFile("\nifnonnull ");
+		return null;
+	}
+	
+	public String visitIfElse(IfElseContext ctx) {
+		branchCount++;
+		int branchNum = branchCount;
+		visit(ctx.exp);
+		appendToFile("True" + branchCount);
+		visit(ctx.onFalse);
+		appendToFile("\ngoto EndIf" + branchCount + "\nTrue" + branchNum + ":");
+		visit(ctx.onTrue);
+		appendToFile("\nEndIf" + branchNum + ":");
 		return null;
 	}
 	

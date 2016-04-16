@@ -4,26 +4,39 @@
 .method static public main([Ljava/lang/String;)V
 .limit stack 100
 .limit locals 100
-ldc 6
+ldc 4
 istore 0
-getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc 3
+istore 1
 iload 0
-invokevirtual java/io/PrintStream/println(I)V
-ldc 5.4
-fstore 1
-ldc "Hellow"
-astore 2
-getstatic java/lang/System/out Ljava/io/PrintStream;
-new java/lang/StringBuilder
-dup
-invokespecial java/lang/StringBuilder/<init>()V
-aload 2
-invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-fload 1
-invokevirtual java/lang/StringBuilder/append(F)Ljava/lang/StringBuilder;
+iload 1
+if_icmpeq True0
 iload 0
-invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
-invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+iload 1
+if_icmpne True1
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Not Equal"
 invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+goto EndIf1
+True1:
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Not Equal Not"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+EndIf1:
+goto EndIf1
+True0:
+ldc 1
+ldc 3
+if_icmpeq True2
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Equal Not"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+goto EndIf2
+True2:
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Equal"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+EndIf2:
+EndIf0:
 return
 .end method

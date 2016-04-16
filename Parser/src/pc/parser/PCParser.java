@@ -34,9 +34,9 @@ public class PCParser extends Parser {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'print('", "')'", "'println('", "'='", "','", "'if '", "':'", "'else'", 
-		"'=='", "'== null'", "'!='", "'!= null'", "'<='", "'>='", "'<'", "'>'", 
-		"'!'", "'+'", "'*'", "'/'", "'-'", "'\n'"
+		null, "'print('", "')'", "'println('", "'='", "','", "'if '", "':'", "'else:'", 
+		"' null'", "'!null'", "'!'", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'", 
+		"'+'", "'*'", "'/'", "'-'", "'\n'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -524,7 +524,7 @@ public class PCParser extends Parser {
 	}
 	public static class HighContext extends ConditionExpressionContext {
 		public ExpressionContext left;
-		public ExpressionContext rigth;
+		public ExpressionContext right;
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -662,105 +662,105 @@ public class PCParser extends Parser {
 			setState(106);
 			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
-				_localctx = new EqualContext(_localctx);
+				_localctx = new NullContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(74);
-				((EqualContext)_localctx).left = expression(0);
+				((NullContext)_localctx).exp = expression(0);
 				setState(75);
 				match(T__8);
-				setState(76);
-				((EqualContext)_localctx).right = expression(0);
 				}
 				break;
 			case 2:
-				_localctx = new NullContext(_localctx);
+				_localctx = new NotNullContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
+				setState(77);
+				((NotNullContext)_localctx).exp = expression(0);
 				setState(78);
-				((NullContext)_localctx).exp = expression(0);
-				setState(79);
 				match(T__9);
 				}
 				break;
 			case 3:
-				_localctx = new NotEqualContext(_localctx);
+				_localctx = new NotContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(81);
-				((NotEqualContext)_localctx).left = expression(0);
-				setState(82);
+				setState(80);
 				match(T__10);
-				setState(83);
-				((NotEqualContext)_localctx).right = expression(0);
+				setState(81);
+				((NotContext)_localctx).exp = expression(0);
 				}
 				break;
 			case 4:
-				_localctx = new NotNullContext(_localctx);
+				_localctx = new EqualContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(85);
-				((NotNullContext)_localctx).exp = expression(0);
-				setState(86);
+				setState(82);
+				((EqualContext)_localctx).left = expression(0);
+				setState(83);
 				match(T__11);
+				setState(84);
+				((EqualContext)_localctx).right = expression(0);
 				}
 				break;
 			case 5:
-				_localctx = new LessEqualContext(_localctx);
+				_localctx = new NotEqualContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(88);
-				((LessEqualContext)_localctx).left = expression(0);
-				setState(89);
+				setState(86);
+				((NotEqualContext)_localctx).left = expression(0);
+				setState(87);
 				match(T__12);
-				setState(90);
-				((LessEqualContext)_localctx).right = expression(0);
+				setState(88);
+				((NotEqualContext)_localctx).right = expression(0);
 				}
 				break;
 			case 6:
-				_localctx = new HighEqualContext(_localctx);
+				_localctx = new LessEqualContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(92);
-				((HighEqualContext)_localctx).left = expression(0);
-				setState(93);
+				setState(90);
+				((LessEqualContext)_localctx).left = expression(0);
+				setState(91);
 				match(T__13);
-				setState(94);
-				((HighEqualContext)_localctx).right = expression(0);
+				setState(92);
+				((LessEqualContext)_localctx).right = expression(0);
 				}
 				break;
 			case 7:
-				_localctx = new LessContext(_localctx);
+				_localctx = new HighEqualContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(96);
-				((LessContext)_localctx).left = expression(0);
-				setState(97);
+				setState(94);
+				((HighEqualContext)_localctx).left = expression(0);
+				setState(95);
 				match(T__14);
-				setState(98);
-				((LessContext)_localctx).right = expression(0);
+				setState(96);
+				((HighEqualContext)_localctx).right = expression(0);
 				}
 				break;
 			case 8:
-				_localctx = new HighContext(_localctx);
+				_localctx = new LessContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(100);
-				((HighContext)_localctx).left = expression(0);
-				setState(101);
+				setState(98);
+				((LessContext)_localctx).left = expression(0);
+				setState(99);
 				match(T__15);
-				setState(102);
-				((HighContext)_localctx).rigth = expression(0);
+				setState(100);
+				((LessContext)_localctx).right = expression(0);
 				}
 				break;
 			case 9:
-				_localctx = new NotContext(_localctx);
+				_localctx = new HighContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(104);
+				setState(102);
+				((HighContext)_localctx).left = expression(0);
+				setState(103);
 				match(T__16);
-				setState(105);
-				((NotContext)_localctx).exp = expression(0);
+				setState(104);
+				((HighContext)_localctx).right = expression(0);
 				}
 				break;
 			}
@@ -777,17 +777,17 @@ public class PCParser extends Parser {
 	}
 
 	public static class ExpressionsContext extends ParserRuleContext {
-		public List<StringExpressionContext> stringExpression() {
-			return getRuleContexts(StringExpressionContext.class);
-		}
-		public StringExpressionContext stringExpression(int i) {
-			return getRuleContext(StringExpressionContext.class,i);
-		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<StringExpressionContext> stringExpression() {
+			return getRuleContexts(StringExpressionContext.class);
+		}
+		public StringExpressionContext stringExpression(int i) {
+			return getRuleContext(StringExpressionContext.class,i);
 		}
 		public List<ConditionExpressionContext> conditionExpression() {
 			return getRuleContexts(ConditionExpressionContext.class);
@@ -825,7 +825,7 @@ public class PCParser extends Parser {
 						{
 						{
 						setState(108);
-						stringExpression();
+						expression(0);
 						}
 						}
 						break;
@@ -850,7 +850,7 @@ public class PCParser extends Parser {
 						{
 						{
 						setState(113);
-						expression(0);
+						stringExpression();
 						}
 						}
 						break;
@@ -1671,17 +1671,17 @@ public class PCParser extends Parser {
 		"\7\6\2\2\678\5\20\t\289\7\7\2\29:\5\b\5\2:?\3\2\2\2;<\7\34\2\2<=\7\6\2"+
 		"\2=?\5\20\t\2>\65\3\2\2\2>;\3\2\2\2?\t\3\2\2\2@A\7\b\2\2AB\5\20\t\2BC"+
 		"\7\t\2\2CD\5\f\7\2DE\7\n\2\2EF\5\f\7\2F\13\3\2\2\2GI\5\4\3\2HG\3\2\2\2"+
-		"IJ\3\2\2\2JH\3\2\2\2JK\3\2\2\2K\r\3\2\2\2LM\5\34\17\2MN\7\13\2\2NO\5\34"+
-		"\17\2Om\3\2\2\2PQ\5\34\17\2QR\7\f\2\2Rm\3\2\2\2ST\5\34\17\2TU\7\r\2\2"+
-		"UV\5\34\17\2Vm\3\2\2\2WX\5\34\17\2XY\7\16\2\2Ym\3\2\2\2Z[\5\34\17\2[\\"+
-		"\7\17\2\2\\]\5\34\17\2]m\3\2\2\2^_\5\34\17\2_`\7\20\2\2`a\5\34\17\2am"+
-		"\3\2\2\2bc\5\34\17\2cd\7\21\2\2de\5\34\17\2em\3\2\2\2fg\5\34\17\2gh\7"+
-		"\22\2\2hi\5\34\17\2im\3\2\2\2jk\7\23\2\2km\5\34\17\2lL\3\2\2\2lP\3\2\2"+
-		"\2lS\3\2\2\2lW\3\2\2\2lZ\3\2\2\2l^\3\2\2\2lb\3\2\2\2lf\3\2\2\2lj\3\2\2"+
-		"\2m\17\3\2\2\2np\5\22\n\2on\3\2\2\2pq\3\2\2\2qo\3\2\2\2qr\3\2\2\2r~\3"+
-		"\2\2\2su\5\34\17\2ts\3\2\2\2uv\3\2\2\2vt\3\2\2\2vw\3\2\2\2w~\3\2\2\2x"+
-		"z\5\16\b\2yx\3\2\2\2z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|~\3\2\2\2}o\3\2\2\2"+
-		"}t\3\2\2\2}y\3\2\2\2~\21\3\2\2\2\177\u0083\5\32\16\2\u0080\u0083\5\30"+
+		"IJ\3\2\2\2JH\3\2\2\2JK\3\2\2\2K\r\3\2\2\2LM\5\34\17\2MN\7\13\2\2Nm\3\2"+
+		"\2\2OP\5\34\17\2PQ\7\f\2\2Qm\3\2\2\2RS\7\r\2\2Sm\5\34\17\2TU\5\34\17\2"+
+		"UV\7\16\2\2VW\5\34\17\2Wm\3\2\2\2XY\5\34\17\2YZ\7\17\2\2Z[\5\34\17\2["+
+		"m\3\2\2\2\\]\5\34\17\2]^\7\20\2\2^_\5\34\17\2_m\3\2\2\2`a\5\34\17\2ab"+
+		"\7\21\2\2bc\5\34\17\2cm\3\2\2\2de\5\34\17\2ef\7\22\2\2fg\5\34\17\2gm\3"+
+		"\2\2\2hi\5\34\17\2ij\7\23\2\2jk\5\34\17\2km\3\2\2\2lL\3\2\2\2lO\3\2\2"+
+		"\2lR\3\2\2\2lT\3\2\2\2lX\3\2\2\2l\\\3\2\2\2l`\3\2\2\2ld\3\2\2\2lh\3\2"+
+		"\2\2m\17\3\2\2\2np\5\34\17\2on\3\2\2\2pq\3\2\2\2qo\3\2\2\2qr\3\2\2\2r"+
+		"~\3\2\2\2su\5\22\n\2ts\3\2\2\2uv\3\2\2\2vt\3\2\2\2vw\3\2\2\2w~\3\2\2\2"+
+		"xz\5\16\b\2yx\3\2\2\2z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|~\3\2\2\2}o\3\2\2"+
+		"\2}t\3\2\2\2}y\3\2\2\2~\21\3\2\2\2\177\u0083\5\32\16\2\u0080\u0083\5\30"+
 		"\r\2\u0081\u0083\5\24\13\2\u0082\177\3\2\2\2\u0082\u0080\3\2\2\2\u0082"+
 		"\u0081\3\2\2\2\u0083\23\3\2\2\2\u0084\u0085\7\34\2\2\u0085\u0086\7\24"+
 		"\2\2\u0086\u008b\5\26\f\2\u0087\u0088\7\33\2\2\u0088\u0089\7\24\2\2\u0089"+

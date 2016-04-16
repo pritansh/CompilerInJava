@@ -64,13 +64,6 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(PCParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Equal}
-	 * labeled alternative in {@link PCParser#conditionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqual(PCParser.EqualContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Null}
 	 * labeled alternative in {@link PCParser#conditionExpression}.
 	 * @param ctx the parse tree
@@ -78,19 +71,33 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNull(PCParser.NullContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code NotEqual}
-	 * labeled alternative in {@link PCParser#conditionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotEqual(PCParser.NotEqualContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code NotNull}
 	 * labeled alternative in {@link PCParser#conditionExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNotNull(PCParser.NotNullContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link PCParser#conditionExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot(PCParser.NotContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Equal}
+	 * labeled alternative in {@link PCParser#conditionExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqual(PCParser.EqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotEqual}
+	 * labeled alternative in {@link PCParser#conditionExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotEqual(PCParser.NotEqualContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code LessEqual}
 	 * labeled alternative in {@link PCParser#conditionExpression}.
@@ -119,13 +126,6 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHigh(PCParser.HighContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link PCParser#conditionExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(PCParser.NotContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PCParser#expressions}.
 	 * @param ctx the parse tree

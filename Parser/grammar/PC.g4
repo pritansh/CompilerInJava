@@ -16,25 +16,25 @@ variableDefinition : var=IDENTIFIER '=' exp=expressions ',' variableDefinition #
 				   | var=IDENTIFIER '=' exp=expressions #LastVariable
 				   ;	
 				   
-conditionStatement : 'if ' exp=expressions ':' onTrue=block 'else' onFalse=block #IfElse
+conditionStatement : 'if ' exp=expressions ':' onTrue=block 'else:' onFalse=block #IfElse
 				   ;
 				   
 block : programPart+
 	  ;
-		
-conditionExpression : left=expression '==' right=expression #Equal
-					| exp=expression '== null' #Null
+	 
+conditionExpression : exp=expression ' null' #Null
+					| exp=expression '!null' #NotNull
+					| '!' exp=expression #Not
+					| left=expression '==' right=expression #Equal
 					| left=expression '!=' right=expression #NotEqual
-					| exp=expression '!= null' #NotNull
 					| left=expression '<=' right=expression #LessEqual
 					| left=expression '>=' right=expression #HighEqual
 					| left=expression '<' right=expression #Less
 					| left=expression '>' right=expression #High
-					| '!' exp=expression #Not
 					;
 				   
-expressions : stringExpression+
-			| expression+
+expressions : expression+
+			| stringExpression+
 			| conditionExpression+
 			;	   
 
