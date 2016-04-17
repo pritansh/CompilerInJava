@@ -2,7 +2,7 @@ if [ ! -e code.pc ];then
 cp Compiler/code.pc .
 fi
 if [ -e classes ]; then
-rmdir classes -p
+rm -rf classes
 fi
 if [ ! -e classes ];then
 mkdir classes
