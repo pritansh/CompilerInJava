@@ -278,19 +278,19 @@ public interface PCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(PCParser.VariableContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ArrayVar}
-	 * labeled alternative in {@link PCParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayVar(PCParser.ArrayVarContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Decimal}
 	 * labeled alternative in {@link PCParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDecimal(PCParser.DecimalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ArrayVar}
+	 * labeled alternative in {@link PCParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayVar(PCParser.ArrayVarContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiply}
 	 * labeled alternative in {@link PCParser#expression}.

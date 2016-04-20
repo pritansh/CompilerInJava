@@ -78,11 +78,11 @@ expression : leftExp=expression '/' rightExp=expression #Divide
 		   | leftExp=expression '*' rightExp=expression #Multiply
 		   | leftExp=expression '-' rightExp=expression #Subtract
 		   | leftExp=expression '+' rightExp=expression #Add
-		   | var=IDENTIFIER '::' digit=DIGIT #ArrayDigit
-		   | var=IDENTIFIER '::' index=IDENTIFIER #ArrayVar
 		   | digit=DIGIT #Digit
 		   | decimal=DECIMAL #Decimal
 		   | var=IDENTIFIER #Variable
+		   | var=IDENTIFIER '::' digit=DIGIT #ArrayDigit
+		   | var=IDENTIFIER '::' index=IDENTIFIER #ArrayVar
 		   ;
 		   
 newLine : '\n' #Line

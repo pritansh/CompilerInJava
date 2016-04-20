@@ -1632,6 +1632,16 @@ public class PCParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class DecimalContext extends ExpressionContext {
+		public Token decimal;
+		public TerminalNode DECIMAL() { return getToken(PCParser.DECIMAL, 0); }
+		public DecimalContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitDecimal(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class ArrayVarContext extends ExpressionContext {
 		public Token var;
 		public Token index;
@@ -1643,16 +1653,6 @@ public class PCParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitArrayVar(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class DecimalContext extends ExpressionContext {
-		public Token decimal;
-		public TerminalNode DECIMAL() { return getToken(PCParser.DECIMAL, 0); }
-		public DecimalContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof PCVisitor ) return ((PCVisitor<? extends T>)visitor).visitDecimal(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1720,56 +1720,56 @@ public class PCParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
 			case 1:
 				{
-				_localctx = new ArrayDigitContext(_localctx);
+				_localctx = new DigitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
 				setState(197);
-				((ArrayDigitContext)_localctx).var = match(IDENTIFIER);
-				setState(198);
-				match(T__7);
-				setState(199);
-				((ArrayDigitContext)_localctx).digit = match(DIGIT);
+				((DigitContext)_localctx).digit = match(DIGIT);
 				}
 				break;
 			case 2:
 				{
-				_localctx = new ArrayVarContext(_localctx);
+				_localctx = new DecimalContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(200);
-				((ArrayVarContext)_localctx).var = match(IDENTIFIER);
-				setState(201);
-				match(T__7);
-				setState(202);
-				((ArrayVarContext)_localctx).index = match(IDENTIFIER);
+				setState(198);
+				((DecimalContext)_localctx).decimal = match(DECIMAL);
 				}
 				break;
 			case 3:
 				{
-				_localctx = new DigitContext(_localctx);
+				_localctx = new VariableContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(203);
-				((DigitContext)_localctx).digit = match(DIGIT);
+				setState(199);
+				((VariableContext)_localctx).var = match(IDENTIFIER);
 				}
 				break;
 			case 4:
 				{
-				_localctx = new DecimalContext(_localctx);
+				_localctx = new ArrayDigitContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(204);
-				((DecimalContext)_localctx).decimal = match(DECIMAL);
+				setState(200);
+				((ArrayDigitContext)_localctx).var = match(IDENTIFIER);
+				setState(201);
+				match(T__7);
+				setState(202);
+				((ArrayDigitContext)_localctx).digit = match(DIGIT);
 				}
 				break;
 			case 5:
 				{
-				_localctx = new VariableContext(_localctx);
+				_localctx = new ArrayVarContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
+				setState(203);
+				((ArrayVarContext)_localctx).var = match(IDENTIFIER);
+				setState(204);
+				match(T__7);
 				setState(205);
-				((VariableContext)_localctx).var = match(IDENTIFIER);
+				((ArrayVarContext)_localctx).index = match(IDENTIFIER);
 				}
 				break;
 			}
@@ -1992,11 +1992,11 @@ public class PCParser extends Parser {
 		"\u00b9\3\2\2\2\u00bc\u00bd\7#\2\2\u00bd\u00be\7\34\2\2\u00be\u00c3\7 "+
 		"\2\2\u00bf\u00c0\7\"\2\2\u00c0\u00c1\7\34\2\2\u00c1\u00c3\7 \2\2\u00c2"+
 		"\u00bc\3\2\2\2\u00c2\u00bf\3\2\2\2\u00c3\35\3\2\2\2\u00c4\u00c5\7\"\2"+
-		"\2\u00c5\37\3\2\2\2\u00c6\u00c7\b\21\1\2\u00c7\u00c8\7#\2\2\u00c8\u00c9"+
-		"\7\n\2\2\u00c9\u00d1\7 \2\2\u00ca\u00cb\7#\2\2\u00cb\u00cc\7\n\2\2\u00cc"+
-		"\u00d1\7#\2\2\u00cd\u00d1\7 \2\2\u00ce\u00d1\7!\2\2\u00cf\u00d1\7#\2\2"+
-		"\u00d0\u00c6\3\2\2\2\u00d0\u00ca\3\2\2\2\u00d0\u00cd\3\2\2\2\u00d0\u00ce"+
-		"\3\2\2\2\u00d0\u00cf\3\2\2\2\u00d1\u00e0\3\2\2\2\u00d2\u00d3\f\13\2\2"+
+		"\2\u00c5\37\3\2\2\2\u00c6\u00c7\b\21\1\2\u00c7\u00d1\7 \2\2\u00c8\u00d1"+
+		"\7!\2\2\u00c9\u00d1\7#\2\2\u00ca\u00cb\7#\2\2\u00cb\u00cc\7\n\2\2\u00cc"+
+		"\u00d1\7 \2\2\u00cd\u00ce\7#\2\2\u00ce\u00cf\7\n\2\2\u00cf\u00d1\7#\2"+
+		"\2\u00d0\u00c6\3\2\2\2\u00d0\u00c8\3\2\2\2\u00d0\u00c9\3\2\2\2\u00d0\u00ca"+
+		"\3\2\2\2\u00d0\u00cd\3\2\2\2\u00d1\u00e0\3\2\2\2\u00d2\u00d3\f\13\2\2"+
 		"\u00d3\u00d4\7\35\2\2\u00d4\u00df\5 \21\f\u00d5\u00d6\f\n\2\2\u00d6\u00d7"+
 		"\7\34\2\2\u00d7\u00df\5 \21\13\u00d8\u00d9\f\t\2\2\u00d9\u00da\7\36\2"+
 		"\2\u00da\u00df\5 \21\n\u00db\u00dc\f\b\2\2\u00dc\u00dd\7\33\2\2\u00dd"+

@@ -1,7 +1,3 @@
-a=[5]f
-	b=0
-	while b<5:
-		a::b=b+4.5
-		println(a::b+4.3)
-		b=b+1
-	;
+a=[5]S
+a::1="s"
+println("h"+a::1)

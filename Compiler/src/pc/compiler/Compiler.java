@@ -198,15 +198,33 @@ public class Compiler extends PCBaseVisitor<String>{
 	}
 
 	public String visitStringArrayDigit(StringArrayDigitContext ctx) {
-		type = "i";
-		appendToFile("\nldc " + ctx.digit.getText());
-		if(!type.equals("Ljava/lang/String;"))
-			type = type.toUpperCase();
-		appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder");
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			type = tmp.getType();
+			appendToFile("\naload " + tmp);
+			appendToFile("\nldc " + ctx.digit.getText());
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "aload");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
+		}
 		return null;
 	}
 	
 	public String visitStringArrayVariable(StringArrayVariableContext ctx) {
+		if(symbolTable.get(ctx.var.getText())!=null) {
+			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			type = tmp.getType();
+			appendToFile("\n" + type + "load " + tmp);
+			if(type.equals("Ljava/lang/String;"))
+				type = "a";
+			appendToFile("\n" + type + "aload");
+			if(type.equals("a"))
+				type = "Ljava/lang/String;";
+			appendToFile("\ninvokevirtual java/lang/StringBuilder/append(" + type + ")Ljava/lang/StringBuilder;");
+		}
 		return null;
 	}
 	
@@ -277,12 +295,13 @@ public class Compiler extends PCBaseVisitor<String>{
 	public String visitVariable(VariableContext ctx) {
 		if(symbolTable.get(ctx.var.getText())!=null) {
 			SymbolTableNode tmp = symbolTable.get(ctx.var.getText());
+			prevType = type;
 			type = tmp.getType();
 			if(type.equals("Ljava/lang/String;"))
 				type = "a";
 			if(!floatBool && type.equals("f") && prevType!=null && prevType.equals("i"))
 				appendToFile("\ni2f");
-			if(type.equals("f"))
+			if(prevType.equals("f"))
 				floatBool = true;
 			appendToFile("\n" + type.toLowerCase() + "load " + tmp);
 			if(type!=null && type.equals("i") && floatBool) {
